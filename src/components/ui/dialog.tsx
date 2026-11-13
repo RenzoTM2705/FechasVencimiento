@@ -12,6 +12,10 @@ export interface DialogProps {
  * Diálogo modal basado en `<dialog>` nativo: aporta foco atrapado, fondo
  * inerte, cierre con Escape y compatibilidad con lectores de pantalla sin
  * dependencias externas.
+ *
+ * **No se cierra al pulsar fuera.** El fondo no cierra el diálogo: solo lo
+ * hacen sus botones (Cancelar, la X o la acción de confirmar) y Escape. Así se
+ * evita perder un formulario a medio llenar por un clic accidental.
  */
 export function Dialog({ title, description, onClose, children }: DialogProps) {
     const ref = useRef<HTMLDialogElement>(null);
@@ -48,9 +52,6 @@ export function Dialog({ title, description, onClose, children }: DialogProps) {
             ref={ref}
             aria-labelledby={titleId}
             onClose={onClose}
-            onClick={(event) => {
-                if (event.target === ref.current) onClose();
-            }}
             className="m-auto max-h-[calc(100dvh-2rem)] w-[min(600px,calc(100vw-1.5rem))] overflow-auto rounded-card border border-line bg-surface p-0 text-ink shadow-2xl backdrop:bg-ink/50"
         >
             <div className="flex items-start justify-between gap-4 border-b border-line px-5 py-4">
