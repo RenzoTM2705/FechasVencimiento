@@ -136,6 +136,7 @@ Cuando la fecha ya se cumplió (`días ≤ 0`) el registro muestra, además de s
 
 - Transiciones de 150–200 ms en color y sombra; nada de desplazamientos llamativos.
 - Hover solo como refuerzo: toda acción existe también con foco de teclado.
+- Los diálogos **no se cierran al pulsar fuera**: solo con sus botones (Cancelar, X, confirmar) o Escape. Se evita perder un formulario a medio llenar por un clic accidental.
 - Estados de carga: esqueletos con la misma altura que el contenido final (sin salto de layout).
 - Feedback: `role="status"` para confirmaciones, `role="alert"` para errores.
 - `prefers-reduced-motion`: se anulan animaciones y transiciones.

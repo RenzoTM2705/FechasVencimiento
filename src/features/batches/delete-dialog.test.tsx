@@ -35,6 +35,18 @@ describe('DeleteDialog', () => {
         expect(onConfirm).not.toHaveBeenCalled();
     });
 
+    it('no se cierra al pulsar fuera del diálogo', () => {
+        const onClose = vi.fn();
+
+        render(<DeleteDialog batch={BATCH} onClose={onClose} onConfirm={vi.fn()} />);
+
+        const dialog = screen.getByRole('dialog');
+        fireEvent.click(dialog);
+        fireEvent.mouseDown(dialog);
+
+        expect(onClose).not.toHaveBeenCalled();
+    });
+
     it('confirma la eliminación', async () => {
         const onConfirm = vi.fn().mockResolvedValue(undefined);
 
