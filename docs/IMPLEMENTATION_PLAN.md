@@ -1,0 +1,121 @@
+# Plan de implementación
+
+> Estado y hoja de ruta por fases. Cada fase se desarrolla en su propia rama y se integra a `main` al terminar, conservando la rama en `origin` como registro del avance.
+
+## Estado general
+
+| Fase | Rama | Estado | Entregable |
+|---|---|---|---|
+| 0 | `docs/fase-0-analisis` | ✅ Hecha | Análisis documental y propuesta técnica (`docs/00-fase-0-analisis.md`) |
+| 1 | `feat/fase-1-scaffold` | 🚧 En curso | Scaffold Vite + TS + Tailwind, tipos, cliente Supabase, docs base, CI |
+| 2 | `feat/fase-2-interfaz` | ⏳ Pendiente | Identidad visual, header/footer, indicadores, filtros, tabla y tarjetas con datos simulados |
+| 3 | `feat/fase-3-registro` | ⏳ Pendiente | Alta individual y grupal, validaciones, autocompletado |
+| 4 | `feat/fase-4-supabase` | ⏳ Pendiente | Migraciones, RLS, RPC, CRUD real y sesión |
+| 5 | `feat/fase-5-vencimientos` | ⏳ Pendiente | Cálculo de días/estados, avisos e indicadores conectados |
+| 6 | `feat/fase-6-filtros` | ⏳ Pendiente | Búsqueda, filtros combinables, orden y contador |
+| 7 | `feat/fase-7-crud-export` | ⏳ Pendiente | Edición, eliminación, exportación CSV/XLSX |
+| 8 | `docs/fase-8-qa-deploy` | ⏳ Pendiente | QA responsive/a11y, checklists, README final y Vercel |
+
+## Fase 1 — Preparación del proyecto
+
+**Objetivo:** dejar un proyecto que arranca, compila, pasa lint/tests y documenta sus decisiones.
+
+Entregables:
+
+- `package.json` con scripts (`dev`, `build`, `preview`, `lint`, `typecheck`, `test`, `test:run`) y pnpm como gestor.
+- Vite + React 19 + TypeScript estricto + Tailwind 4 + Vitest.
+- `src/lib/env.ts`, `src/lib/supabase.ts`, `src/lib/errors.ts`, `src/lib/cn.ts`.
+- Tipos de base de datos y de dominio (`src/types/`).
+- `.env.example`, `.gitignore`, `vercel.json` (CSP y cabeceras), CI en `.github/workflows/ci.yml`.
+- Documentación base: `README.md`, `PROJECT_BRIEF.md`, `CONTEXT.md`, `MEMORY.md`, `docs/PRD.md`.
+- Repositorio Git inicializado con rama `main` y rama de fase.
+
+**Criterio de salida:** `pnpm lint`, `pnpm typecheck`, `pnpm test:run` y `pnpm build` en verde.
+
+## Fase 2 — Identidad visual e interfaz
+
+**Objetivo:** una interfaz completa y usable con datos simulados, sin tocar la base todavía.
+
+- Investigar skills de UI/UX disponibles y fijar identidad: paleta, tipografía, jerarquía, espaciados, radios y sombras.
+- `docs/UX.md` con tokens y reglas de uso.
+- Header con espacio de logotipo, nombre y cierre de sesión; footer discreto con año.
+- Indicadores, barra de búsqueda/filtros, selector de vista, tabla (5 columnas) y tarjetas agrupadas.
+- Estados: carga, vacío, sin resultados, error.
+- Responsive verificado en 360/414/768/1024/1440 px.
+
+**Criterio de salida:** ambas vistas funcionan con datos simulados en móvil y escritorio; a11y básica revisada (teclado, foco, contraste).
+
+## Fase 3 — Registro de productos
+
+- Diálogo de alta individual con validación por campo.
+- Diálogo de alta grupal con filas dinámicas, encargado único y validación por fila.
+- Autocompletado de productos contra el catálogo (servicio simulado hasta la Fase 4).
+- Mensajes de error en español y bloqueo de doble envío.
+
+**Criterio de salida:** altas válidas e inválidas cubiertas por pruebas; sin datos que se pierdan al fallar.
+
+## Fase 4 — Base de datos y persistencia
+
+- `supabase/migrations/0001_core.sql`, `0002_rls.sql`, `0003_rpc.sql`.
+- RLS activada y probada con la `anon key` (acceso cero).
+- RPC `register_batches` y servicios `batches-service`, `products-service`.
+- Sesión real: pantalla de acceso, guardia de sesión y cierre.
+- `docs/TRD.md` con esquema, políticas y flujo de migraciones.
+
+**Criterio de salida:** datos persistentes tras recargar y desde otro dispositivo; sin acceso anónimo.
+
+## Fase 5 — Lógica de vencimientos
+
+- `src/lib/expiry.ts` + pruebas de 22/21/11/10/1/0/−1.
+- Etiquetas, colores, iconos y aviso «FECHA CUMPLIDA, RETIRAR INMEDIATAMENTE».
+- Indicadores conectados a datos reales.
+
+**Criterio de salida:** los siete casos producen el estado esperado y los indicadores cuadran con la tabla.
+
+## Fase 6 — Búsqueda y filtros
+
+- `src/lib/filters.ts` y `sorting.ts` puros y probados.
+- Barra de filtros combinables, contador de resultados, limpiar filtros.
+- Filtros aplicados antes de agrupar tarjetas; estado conservado al cambiar de vista.
+
+**Criterio de salida:** matriz de filtros cumplida; sin registros fuera de rango en tarjetas.
+
+## Fase 7 — Edición, eliminación y exportación
+
+- Edición en diálogo reutilizando el formulario.
+- Eliminación con confirmación y actualización de indicadores.
+- `export-csv.ts` y `export-xlsx.ts`; menú «Todos / Filtrados».
+
+**Criterio de salida:** archivos abren en Excel/LibreOffice con columnas, fechas y estados correctos.
+
+## Fase 8 — QA, accesibilidad y despliegue
+
+- Revisión responsive y de accesibilidad (WCAG 2.2 AA como objetivo).
+- `QUALITY_CHECKLIST`, `SECURITY_CHECKLIST` y `BACKEND_CHECKLIST` marcados con evidencia.
+- README final, `.env.example` revisado, build de producción.
+- Configuración de Vercel y verificación posterior al despliegue.
+
+**Criterio de salida:** build de producción servido desde Vercel, login funcionando y checklists cerrados.
+
+## Riesgos y mitigaciones
+
+| Riesgo | Prob. | Impacto | Mitigación |
+|---|---|---|---|
+| RLS mal configurada y datos expuestos | Baja | Crítico | Políticas solo `authenticated`, prueba con `anon` en Fase 4, revisión en Fase 8 |
+| Error de zona horaria en días restantes | Media | Alto | Cálculo con `Date.UTC` + pruebas de umbrales y cambio de día |
+| Tabla ilegible en móvil | Media | Medio | Scroll interno, `min-width`, acciones fijas, prueba en 360 px |
+| Crecimiento del dataset | Baja | Medio | Guarda de 5 000 registros; paginación si el volumen lo exige |
+| Dependencia de Supabase (servicio externo) | Baja | Medio | Exportación local como respaldo operativo |
+| Deriva entre documentación y código | Media | Bajo | Docs en la misma rama que el cambio |
+
+## Rollback
+
+- **Código:** cada fase está en su rama; revertir es `git revert` del merge o volver a la etiqueta anterior de `main`.
+- **Base de datos:** las migraciones son aditivas (`create table if not exists`, `create policy`); un rollback de esquema requiere migración explícita y backup previo.
+- **Vercel:** redeploy de un deployment anterior desde el dashboard.
+
+## Convenciones
+
+- Commits: Conventional Commits en inglés (`feat:`, `fix:`, `docs:`, `test:`, `chore:`).
+- Una rama por fase; merge a `main` al terminar; sin `push --force`.
+- Cada fase termina con: resumen, archivos tocados, decisiones, pruebas ejecutadas y pendientes.

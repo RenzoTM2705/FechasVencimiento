@@ -1,0 +1,8 @@
+# Configuración de pnpm para este proyecto.
+#
+# `hoisted`: árbol plano de node_modules (como npm). pnpm usa enlaces simbólicos
+# por defecto, que algunos entornos de Windows (antivirus, sandboxes, unidades
+# secundarias) no resuelven; con ellos ESLint falla con "Cannot find package
+# '@humanfs/node'" y Vite con "Cannot find package 'rolldown'".
+# Ver CONTEXT.md, decisión técnica del 2026-11-13.
+nodeLinker: hoisted

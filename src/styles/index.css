@@ -1,0 +1,46 @@
+@import '@fontsource-variable/inter';
+@import 'tailwindcss';
+
+/* ============================================================
+ * Tokens base. La identidad visual completa (paleta de estados,
+ * jerarquía, espaciados y componentes) se define en la Fase 2
+ * y se documenta en docs/UX.md.
+ * ============================================================ */
+
+@theme {
+    --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+@layer base {
+    html {
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100dvh;
+        font-family: var(--font-sans);
+        background-color: #f8fafc;
+        color: #0f172a;
+        -webkit-font-smoothing: antialiased;
+        font-synthesis-weight: none;
+    }
+
+    /* Números tabulares para cantidades y fechas alineadas. */
+    table,
+    .tabular {
+        font-variant-numeric: tabular-nums;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
