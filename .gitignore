@@ -1,0 +1,32 @@
+# Dependencias
+node_modules/
+.pnpm-store/
+
+# Build y artefactos
+dist/
+coverage/
+*.tsbuildinfo
+
+# Caché local de herramientas
+.cache/
+
+# Variables de entorno (nunca versionar valores reales)
+.env
+.env.local
+.env.*.local
+*.env.local
+
+# Sistema operativo y editores
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Vercel
+.vercel/
