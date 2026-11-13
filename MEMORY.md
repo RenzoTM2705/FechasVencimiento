@@ -36,7 +36,7 @@
 
 ## Estado actual
 
-- **Fase:** desarrollo — Fases 0 a 3 completadas.
-- **Hecho:** análisis (Fase 0); scaffold, tipos, docs y CI (Fase 1); identidad visual, indicadores, filtros, tabla y tarjetas (Fase 2); alta individual y grupal, validaciones y autocompletado (Fase 3).
-- **Próximo:** Fase 4 — migraciones SQL, RLS, RPC, servicios reales y sesión.
-- **Bloqueos:** proyecto Supabase pendiente (URL y anon key). Sin él, la Fase 4 no puede cerrarse; las fases anteriores no dependen de ello.
+- **Fase:** desarrollo — Fases 0 a 3 cerradas; Fase 4 implementada y pendiente de verificación.
+- **Hecho:** análisis (Fase 0); scaffold, tipos, docs y CI (Fase 1); identidad visual y vistas (Fase 2); altas, validaciones y autocompletado (Fase 3); migraciones, RLS, RPC, servicio Supabase y pantalla de acceso (Fase 4, sin credenciales).
+- **Próximo:** verificar la Fase 4 con un proyecto Supabase real y continuar con la Fase 5 (avisos e indicadores con datos reales).
+- **Bloqueos:** proyecto Supabase pendiente (URL y anon key). Sin él no se puede ejecutar la verificación de `docs/TRD.md` §8.

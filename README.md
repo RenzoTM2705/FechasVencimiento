@@ -36,6 +36,17 @@ La aplicación queda en `http://localhost:5173`.
 
 > El proyecto usa `node-linker=hoisted` (`pnpm-workspace.yaml`) para evitar fallos de resolución en Windows con enlaces simbólicos. No requiere pasos extra: `pnpm install` lo respeta.
 
+### Modo demostración
+
+Sin `VITE_SUPABASE_URL` ni `VITE_SUPABASE_ANON_KEY`:
+
+- **Desarrollo** (`pnpm dev`): el panel arranca con datos de ejemplo en memoria y un aviso visible. Nada se guarda.
+- **Producción** (`pnpm build`): se muestra una pantalla de configuración; la app no arranca con datos falsos.
+
+### Logotipo
+
+`public/logo.svg` es el favicon y `src/components/layout/logo.tsx` dibuja la marca del header. Ambos son un marcador: reemplázalos por el logotipo definitivo cuando esté disponible.
+
 ### Comandos
 
 | Comando | Qué hace |
