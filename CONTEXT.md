@@ -101,6 +101,7 @@ docs/                  # PRD, TRD, UX, FLOW, plan, análisis de Fase 0
 | Logotipo en línea (`components/layout/logo.tsx`) | El `<img>` con SVG no se pintaba en el navegador headless usado para verificar; en línea es nítido, sin petición y reemplazable en un solo archivo | 2026-11-13 |
 | Firma tipada a mano para `register_batches` | La inferencia de argumentos de postgrest-js exige coincidencia exacta y resolvía `undefined` con tipos escritos a mano; la firma explícita conserva nombre y argumentos verificados | 2026-11-13 |
 | Sin Supabase configurado | Producción muestra pantalla de configuración; desarrollo usa memoria con aviso de modo demostración. Nunca se simula persistencia en producción | 2026-11-13 |
+| Migraciones por Management API | `POST /v1/projects/{ref}/database/query` con `read_only: false` aplica el SQL; `/database/migrations` exige el permiso `database_migrations_write` que el token inicial no tenía | 2026-11-13 |
 
 ## Requisitos no funcionales
 

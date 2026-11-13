@@ -36,7 +36,8 @@
 
 ## Estado actual
 
-- **Fase:** desarrollo — Fases 0 a 3 cerradas; Fase 4 implementada y pendiente de verificación.
-- **Hecho:** análisis (Fase 0); scaffold, tipos, docs y CI (Fase 1); identidad visual y vistas (Fase 2); altas, validaciones y autocompletado (Fase 3); migraciones, RLS, RPC, servicio Supabase y pantalla de acceso (Fase 4, sin credenciales).
-- **Próximo:** verificar la Fase 4 con un proyecto Supabase real y continuar con la Fase 5 (avisos e indicadores con datos reales).
-- **Bloqueos:** proyecto Supabase `hctnhfazszxkxcimadrm` accesible (2026-11-13) pero sin migraciones aplicadas y con registro público abierto; falta el usuario administrador. Comprobar con `pnpm run check:supabase`.
+- **Fase:** desarrollo — Fases 0 a 4 cerradas; siguiente: Fase 5.
+- **Hecho:** análisis (Fase 0); scaffold, tipos, docs y CI (Fase 1); identidad visual y vistas (Fase 2); altas, validaciones y autocompletado (Fase 3); base de datos, RLS, RPC, servicios y acceso verificados contra Supabase real (Fase 4).
+- **Verificación Supabase (2026-11-13):** proyecto `hctnhfazszxkxcimadrm`, migraciones aplicadas, registro público desactivado, `check:supabase` 7/7 y E2E 9/9 con usuario temporal eliminado después.
+- **Próximo:** Fase 5 — avisos de retiro, distinción vence hoy/vencido e indicadores con datos reales.
+- **Bloqueos:** falta crear el usuario administrador definitivo en Supabase (no existe ninguno).

@@ -165,7 +165,13 @@ En la aplicación:
 4. Abrir en otro dispositivo con la misma cuenta: mismos datos.
 5. Cerrar sesión: no se ve ningún dato.
 
-Estado (2026-11-13): proyecto `hctnhfazszxkxcimadrm` accesible; **faltan las migraciones** (tablas no creadas) y el **registro público está abierto**. `check:supabase` devuelve 1/7 hasta completar los pasos. La Fase 4 no se considera cerrada.
+Estado (2026-11-13): **verificado contra el proyecto real** `hctnhfazszxkxcimadrm`.
+
+- Migraciones `0001`–`0003` aplicadas (8 políticas RLS, 4 índices, trigger de normalización activo, `register_batches` con `prosecdef = false`).
+- Registro público desactivado vía Management API.
+- `pnpm run check:supabase` → **7/7**.
+- Prueba E2E con usuario temporal: inicio de sesión, alta de 2 lotes por RPC (mismo producto con mayúsculas y espacios distintos → un solo registro de catálogo), rechazo de alta con fila inválida sin dejar registros parciales, y limpieza completa. **9/9**.
+- Pendiente: crear el usuario administrador definitivo (no existe ninguno en el proyecto).
 
 ## 9. Operación
 
