@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { makeBatch } from '@/test/factories';
-import { suggestProducts, uniqueProductNames } from './products';
+import { productOptions, suggestProducts, uniqueProductNames } from './products';
 
 describe('uniqueProductNames', () => {
     it('deduplica sin distinguir mayúsculas ni acentos y conserva el primer nombre visible', () => {
@@ -16,6 +16,21 @@ describe('uniqueProductNames', () => {
 
     it('devuelve una lista vacía sin registros', () => {
         expect(uniqueProductNames([])).toEqual([]);
+    });
+});
+
+describe('productOptions', () => {
+    it('devuelve productos únicos ordenados por nombre', () => {
+        const batches = [
+            makeBatch({ productId: 'p-yogurt', productName: 'Yogurt Laive' }),
+            makeBatch({ productId: 'p-leche', productName: 'Leche Gloria' }),
+            makeBatch({ productId: 'p-leche', productName: 'Leche Gloria' }),
+        ];
+
+        expect(productOptions(batches)).toEqual([
+            { id: 'p-leche', name: 'Leche Gloria' },
+            { id: 'p-yogurt', name: 'Yogurt Laive' },
+        ]);
     });
 });
 

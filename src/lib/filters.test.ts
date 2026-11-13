@@ -1,11 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { makeBatch } from '@/test/factories';
+import type { BatchFilters } from '@/types/domain';
 import {
     DEFAULT_FILTERS,
+    activeFilterCount,
     applyFilters,
     computeIndicators,
     hasActiveFilters,
     responsibleOptions,
+    toggleStatus,
 } from './filters';
 
 const BATCHES = [
@@ -138,5 +141,47 @@ describe('hasActiveFilters', () => {
 describe('responsibleOptions', () => {
     it('devuelve encargados únicos y ordenados', () => {
         expect(responsibleOptions(BATCHES)).toEqual(['Carlos', 'María']);
+    });
+});
+
+describe('toggleStatus', () => {
+    it('añade y quita estados conservando el orden', () => {
+        expect(toggleStatus([], 'critico')).toEqual(['critico']);
+        expect(toggleStatus(['critico'], 'vencido')).toEqual(['critico', 'vencido']);
+        expect(toggleStatus(['critico', 'vencido'], 'critico')).toEqual(['vencido']);
+    });
+
+    it('no muta el arreglo original', () => {
+        const original: BatchFilters['statuses'] = ['vigente'];
+        toggleStatus(original, 'vencido');
+        expect(original).toEqual(['vigente']);
+    });
+});
+
+describe('activeFilterCount', () => {
+    it('cuenta categorías activas sin contar el orden', () => {
+        expect(activeFilterCount(DEFAULT_FILTERS)).toBe(0);
+        expect(activeFilterCount({ ...DEFAULT_FILTERS, sort: 'product_asc' })).toBe(0);
+        expect(activeFilterCount({ ...DEFAULT_FILTERS, search: 'leche' })).toBe(1);
+        expect(
+            activeFilterCount({
+                ...DEFAULT_FILTERS,
+                search: 'leche',
+                statuses: ['critico'],
+                dueWithinDays: 7,
+            }),
+        ).toBe(3);
+    });
+
+    it('cuenta el rango como dos filtros y la fecha exacta como uno', () => {
+        expect(activeFilterCount({ ...DEFAULT_FILTERS, dateFrom: '2026-11-01' })).toBe(1);
+        expect(
+            activeFilterCount({
+                ...DEFAULT_FILTERS,
+                dateFrom: '2026-11-01',
+                dateTo: '2026-11-30',
+            }),
+        ).toBe(2);
+        expect(activeFilterCount({ ...DEFAULT_FILTERS, dateExact: '2026-11-13' })).toBe(1);
     });
 });

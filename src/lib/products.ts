@@ -1,7 +1,20 @@
-import type { BatchView } from '@/types/domain';
+import type { BatchView, ProductOption } from '@/types/domain';
 import { normalizeText } from './text';
 
 const collator = new Intl.Collator('es');
+
+/** Catálogo de productos presentes en los registros, para el filtro por producto. */
+export function productOptions(batches: BatchView[]): ProductOption[] {
+    const map = new Map<string, ProductOption>();
+
+    for (const batch of batches) {
+        if (!map.has(batch.productId)) {
+            map.set(batch.productId, { id: batch.productId, name: batch.productName });
+        }
+    }
+
+    return [...map.values()].sort((a, b) => collator.compare(a.name, b.name));
+}
 
 /** Nombres de producto únicos presentes en los registros, ordenados alfabéticamente. */
 export function uniqueProductNames(batches: BatchView[]): string[] {
