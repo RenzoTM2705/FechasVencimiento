@@ -14,7 +14,7 @@
 | 5 | `feat/fase-5-vencimientos` | ✅ Hecha | Avisos, indicadores conectados y validación de umbrales |
 | 6 | `feat/fase-6-filtros` | ✅ Hecha | Búsqueda, filtros combinables, orden y contador |
 | 7 | `feat/fase-7-crud-export` | ✅ Hecha | Edición, eliminación y exportación CSV/XLSX |
-| 8 | `docs/fase-8-qa-deploy` | ⏳ Pendiente | QA responsive/a11y, checklists, README final y Vercel |
+| 8 | `docs/fase-8-qa-deploy` | 🟡 QA cerrada, despliegue pendiente | QA responsive/a11y, checklists, README final y Vercel |
 
 ## Fase 1 — Preparación del proyecto
 
@@ -110,6 +110,8 @@ Entregables:
 - Configuración de Vercel y verificación posterior al despliegue.
 
 **Criterio de salida:** build de producción servido desde Vercel, login funcionando y checklists cerrados.
+
+**Resultado (2026-11-13):** QA cerrada; **despliegue pendiente de autorización y de las variables en Vercel**. Se auditó contraste (13/13), dependencias (`pnpm audit --prod` sin vulnerabilidades), responsive en 390/500/768/1440, y se completaron los tres checklists con evidencia. Se añadió el modo de acceso configurable (`VITE_MODO_ACCESO`, con `0005_modo_publico.sql` sin aplicar) y las acciones de fila pasaron a ser fijas en la tabla móvil.
 
 ## Riesgos y mitigaciones
 

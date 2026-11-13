@@ -36,3 +36,21 @@
 - No prometas seguridad absoluta ni cumplimiento legal automático.
 - No implementes controles que requieren backend solo en frontend.
 - Escala a revisión humana los datos sensibles, pagos, autenticación, permisos y requisitos regulatorios.
+
+---
+
+## Estado de verificación — 2026-11-13
+
+- [x] `.env` y `.env.local` ignorados por Git; `.env.example` solo con nombres y placeholders.
+- [x] Sin claves privadas en el cliente: únicamente la publishable key; `src/lib/env.ts` aborta si detecta una clave con forma de `service_role`.
+- [x] RLS activa en `stores`, `products` y `product_batches`; `anon` sin políticas. Probado con `pnpm run check:supabase` (7/7) y con peticiones directas a PostgREST.
+- [x] Registro público desactivado (`disable_signup: true`) verificado vía API de Auth.
+- [x] Validación de datos en cliente y de nuevo en las RPC del servidor (constraints + `raise exception`).
+- [x] Errores sin detalles internos: `toFriendlyMessage` traduce códigos y nunca muestra mensajes de Postgres.
+- [x] Sesión gestionada por Supabase Auth; sin cookies propias ni tokens en `localStorage` más allá de la sesión del SDK.
+- [x] HTTPS y cabeceras en `vercel.json`: CSP, `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`.
+- [x] Dependencias: `pnpm audit --prod` sin vulnerabilidades conocidas.
+- [ ] **Modo público (`0005_modo_publico.sql`): no aplicado.** Si se activa, el acceso anónimo de lectura/escritura es un riesgo aceptado explícitamente por el propietario.
+- [ ] Backups protegidos y restauración probada: **pendiente** (gestionados por Supabase; no se probó restaurar).
+- [ ] Rotación de los tokens de acceso compartidos durante el desarrollo: **pendiente del propietario**.
+- [ ] Datos personales: solo el nombre del encargado (dato laboral mínimo). Sin analítica, cookies no esenciales ni terceros.

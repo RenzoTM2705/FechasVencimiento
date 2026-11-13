@@ -62,3 +62,46 @@
 - [ ] CI básica (lint, tests, build en cada push) configurada si el repo lo soporta.
 - [ ] Certificado TLS y renovación automática confirmados por plataforma.
 - [ ] Search Console/Bing Webmaster y ficha de Google configuradas solo si aplican y el propietario tiene acceso.
+
+---
+
+## Estado de verificación — 2026-11-13
+
+Evidencia ejecutada: `pnpm run lint` (0), `pnpm run typecheck` (0), `pnpm run test:run` (95/95), `pnpm run build` (OK), `pnpm run check:contrast` (13/13), `pnpm run check:supabase` (7/7), `pnpm audit --prod` (sin vulnerabilidades), capturas reales en 390, 500, 768 y 1440 px.
+
+### Funcionalidad
+- [x] Una sola pantalla (acceso + panel). **404 personalizada: N/A** (sin rutas).
+- [x] Formularios validan por campo, muestran error global, loading y bloqueo de doble envío (pruebas de componentes).
+- [x] Estados cubiertos: cargando, vacío, sin resultados, error de red con «Reintentar», éxito.
+- [x] Sin contenido de prueba: los datos de demostración se eliminaron de la base al cerrar cada fase.
+- [x] Todas las acciones declaradas tienen comportamiento (registrar, editar, eliminar, filtrar, exportar, cerrar sesión).
+
+### Diseño y responsive
+- [x] Jerarquía clara, CTA principal visible («Registrar producto»), diseño coherente con `docs/UX.md`.
+- [x] Breakpoints verificados con capturas: 390, 500, 768, 1440 px.
+- [x] Sin scroll horizontal de página; la tabla lo hace dentro de su contenedor y con acciones fijas.
+- [x] Favicon y logotipo: marcador reemplazable (`public/logo.svg`, `logo.tsx`).
+
+### Accesibilidad
+- [x] Navegación por teclado, foco visible, `<dialog>` nativo con foco atrapado.
+- [x] HTML semántico, `caption` en tabla, `scope="col"`, jerarquía de encabezados.
+- [x] Inputs con label; errores con `aria-invalid` y `aria-describedby`; avisos con `role="alert"`/`status`.
+- [x] Contraste auditado: 13/13 combinaciones ≥ 4.5:1 (texto) y ≥ 3:1 (riel de estado).
+- [x] Estado nunca solo por color: etiqueta, icono y texto.
+- [x] `prefers-reduced-motion` respetado; iconos interactivos con `aria-label`.
+
+### SEO y compartir
+- [x] `title` y `description` únicos.
+- [x] `noindex, nofollow` explícito: **canonical, Open Graph, sitemap, robots indexable y datos estructurados N/A** (aplicación privada).
+
+### Seguridad y privacidad
+- [x] Ver `SECURITY_CHECKLIST.md` (RLS probada, sin claves privilegiadas, CSP, dependencias auditadas).
+
+### Operación y lanzamiento
+- [x] CI en GitHub Actions: lint, typecheck, tests y build en cada push.
+- [x] Caché de assets en `vercel.json` (immutable para `/assets`).
+- [ ] Analítica y consentimiento: **N/A** (no se usa analítica).
+- [ ] Pruebas en navegadores objetivo: **parcial** (Chrome headless; falta Safari/iOS real).
+- [ ] Backups y restauración probada: **pendiente** (los gestiona Supabase; no se probó restaurar).
+- [ ] Deployment en Vercel: **pendiente de autorización y variables de entorno**.
+- [ ] Search Console/Bing/Google Business: **N/A**.
