@@ -8,10 +8,10 @@
 |---|---|---|---|
 | 0 | `docs/fase-0-analisis` | ✅ Hecha | Análisis documental y propuesta técnica (`docs/00-fase-0-analisis.md`) |
 | 1 | `feat/fase-1-scaffold` | ✅ Hecha | Scaffold Vite + TS + Tailwind, tipos, cliente Supabase, docs base, CI |
-| 2 | `feat/fase-2-interfaz` | ⏳ Pendiente | Identidad visual, header/footer, indicadores, filtros, tabla y tarjetas con datos simulados |
+| 2 | `feat/fase-2-interfaz` | ✅ Hecha | Identidad visual, header/footer, indicadores, filtros, tabla y tarjetas con datos simulados |
 | 3 | `feat/fase-3-registro` | ⏳ Pendiente | Alta individual y grupal, validaciones, autocompletado |
 | 4 | `feat/fase-4-supabase` | ⏳ Pendiente | Migraciones, RLS, RPC, CRUD real y sesión |
-| 5 | `feat/fase-5-vencimientos` | ⏳ Pendiente | Cálculo de días/estados, avisos e indicadores conectados |
+| 5 | `feat/fase-5-vencimientos` | ⏳ Pendiente | Avisos, indicadores conectados y validación exhaustiva de umbrales |
 | 6 | `feat/fase-6-filtros` | ⏳ Pendiente | Búsqueda, filtros combinables, orden y contador |
 | 7 | `feat/fase-7-crud-export` | ⏳ Pendiente | Edición, eliminación, exportación CSV/XLSX |
 | 8 | `docs/fase-8-qa-deploy` | ⏳ Pendiente | QA responsive/a11y, checklists, README final y Vercel |
@@ -46,6 +46,8 @@ Entregables:
 - Responsive verificado en 360/414/768/1024/1440 px.
 
 **Criterio de salida:** ambas vistas funcionan con datos simulados en móvil y escritorio; a11y básica revisada (teclado, foco, contraste).
+
+**Resultado (2026-11-13):** completada. Tokens y reglas en `docs/UX.md`; componentes base, header/footer, indicadores, barra de filtros funcional (búsqueda, encargado, estado, orden y limpiar), tabla de 5 columnas y tarjetas agrupadas con «Ver todos». Verificado con capturas reales en 1440, 768 y 500 px. El cálculo de vencimientos (`src/lib/expiry.ts`) se adelantó a esta fase porque la interfaz lo necesita; la Fase 5 queda para los avisos, los indicadores con datos reales y la validación exhaustiva de umbrales. Se añadieron 49 pruebas (expiry, filtros, agrupación y errores).
 
 ## Fase 3 — Registro de productos
 

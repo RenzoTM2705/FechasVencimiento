@@ -93,6 +93,8 @@ docs/                  # PRD, TRD, UX, FLOW, plan, análisis de Fase 0
 | Preferencia de vista en `localStorage` | Solo UI; los datos de negocio siempre viven en Supabase | 2026-11-13 |
 | `node-linker=hoisted` en `pnpm-workspace.yaml` | Los enlaces simbólicos del linker aislado no se resuelven en algunos entornos Windows (ESLint: `Cannot find package '@humanfs/node'`; Vite: `Cannot find package 'rolldown'`). El árbol plano funciona igual en CI y Vercel | 2026-11-13 |
 | Vitest con `pool: 'threads'` | El pool de procesos lanza hijos con tuberías y falla con `EPERM` en entornos restringidos; los hilos no necesitan procesos externos | 2026-11-13 |
+| Paleta neutra + semáforo reservado | Verde, ámbar y rojo solo significan estado de vencimiento; el resto de la UI es tinta/gris/azul. Evita que un rojo decorativo se confunda con «vencido» | 2026-11-13 |
+| Una sola familia tipográfica (Inter) | Tabla densa y móvil: pesos y numerales tabulares bastan; evitar dos familias del pairing sugerido para retail | 2026-11-13 |
 
 ## Requisitos no funcionales
 
