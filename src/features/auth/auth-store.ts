@@ -74,16 +74,25 @@ export async function signOut(): Promise<void> {
     }
 }
 
-/** Refresca la sesión si está a punto de caducar (margen de 2 minutos). */
+/**
+ * Refresca la sesión si está a punto de caducar (margen de 2 minutos).
+ *
+ * Nunca lanza: si el almacenamiento de sesión falla o no hay sesión, el
+ * guardado sigue su curso y el error real (si lo hay) se muestra al usuario.
+ */
 export async function ensureFreshSession(): Promise<void> {
-    const supabase = getSupabase();
-    const { data } = await supabase.auth.getSession();
-    const session = data.session;
+    try {
+        const supabase = getSupabase();
+        const { data } = await supabase.auth.getSession();
+        const session = data.session;
 
-    if (!session) return;
+        if (!session) return;
 
-    const endsAt = (session.expires_at ?? 0) * 1000;
-    if (endsAt - Date.now() < 120_000) {
-        await supabase.auth.refreshSession();
+        const endsAt = (session.expires_at ?? 0) * 1000;
+        if (endsAt - Date.now() < 120_000) {
+            await supabase.auth.refreshSession();
+        }
+    } catch {
+        // La operación continúa; si el token no sirve, la RPC lo dirá.
     }
 }

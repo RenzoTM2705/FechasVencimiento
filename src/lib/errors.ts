@@ -39,7 +39,7 @@ const CODE_MESSAGES: Record<string, string> = {
 
 const CONNECTION_MESSAGES = ['failed to fetch', 'networkerror', 'network request failed', 'load failed'];
 
-const SESSION_MESSAGES = ['jwt expired', 'invalid jwt', 'jwt is expired', 'token has expired'];
+const SESSION_MESSAGES = ['jwt expired', 'invalid jwt', 'jwt is expired', 'token has expired', 'auth session missing'];
 
 const INVALID_CREDENTIALS = ['invalid login credentials', 'invalid_grant'];
 
@@ -52,6 +52,15 @@ function messageOf(error: unknown): string {
         if (typeof value === 'string') return value;
     }
     return '';
+}
+
+/** Nombre del error (`TypeError`, `AuthSessionMissingError`, …). */
+function nameOf(error: unknown): string | null {
+    if (error && typeof error === 'object' && 'name' in error) {
+        const value = (error as { name?: unknown }).name;
+        if (typeof value === 'string' && value !== '' && value !== 'Error') return value;
+    }
+    return null;
 }
 
 /** Código devuelto por PostgREST/Postgres, si existe. */
@@ -80,7 +89,9 @@ export function isSessionExpired(error: unknown): boolean {
     if (code === 'PGRST301' || code === 'PGRST302') return true;
 
     const message = messageOf(error).toLowerCase();
-    return SESSION_MESSAGES.some((fragment) => message.includes(fragment));
+    if (SESSION_MESSAGES.some((fragment) => message.includes(fragment))) return true;
+
+    return nameOf(error) === 'AuthSessionMissingError';
 }
 
 export function isInvalidCredentials(error: unknown): boolean {
@@ -116,5 +127,6 @@ export function toFriendlyMessage(error: unknown): string {
         return 'Tu usuario no tiene permiso para esta acción. Revisa las políticas de la base de datos.';
     }
 
-    return technical ? `${FALLBACK} (ref: ${technical})` : FALLBACK;
+    const reference = technical ?? nameOf(error);
+    return reference ? `${FALLBACK} (ref: ${reference})` : FALLBACK;
 }
