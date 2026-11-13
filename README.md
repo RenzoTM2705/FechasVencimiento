@@ -45,18 +45,19 @@ Sin `VITE_SUPABASE_URL` ni `VITE_SUPABASE_ANON_KEY`:
 
 ### Acceso directo (solo desarrollo)
 
-Para entrar sin escribir credenciales mientras se desarrolla, en `.env.local`:
+**Desactivado.** Hoy se entra con correo y contraseña tanto en desarrollo como en producción. El mecanismo queda disponible por si se quiere usar en local:
 
 ```bash
+# .env.local
 VITE_ACCESO_DIRECTO=true
 VITE_ACCESO_DIRECTO_EMAIL=tu-correo
 VITE_ACCESO_DIRECTO_PASSWORD="tu-contraseña"
 ```
 
-`pnpm dev` inicia sesión automáticamente y abre el panel. El módulo se carga con
-`import()` dinámico dentro de un bloque `import.meta.env.DEV`: el build de
-producción no lo incluye y las credenciales no llegan al bundle (verificado).
-En producción el acceso sigue siendo con correo y contraseña.
+`pnpm dev` iniciaría sesión automáticamente. El módulo se carga con `import()`
+dinámico dentro de un bloque `import.meta.env.DEV`: el build de producción no lo
+incluye y las credenciales no llegan al bundle (verificado). Nunca se activa en
+producción.
 
 ### Modo público (sin login)
 
