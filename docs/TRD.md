@@ -124,9 +124,17 @@ Son idempotentes (`if not exists`, `create or replace`, `drop policy if exists`)
 
 `.env.local` está ignorado por Git. En Vercel se definen para Production, Preview y Development. Sin variables, el build de producción muestra la pantalla de configuración (no arranca con datos de ejemplo).
 
-## 8. Verificación (pendiente de ejecutar en un proyecto real)
+## 8. Verificación
 
-En el SQL Editor:
+Comprobación automatizada (sin credenciales privilegiadas):
+
+```bash
+pnpm run check:supabase
+```
+
+Lee `.env.local` o `.env` y verifica: Auth accesible, registro público desactivado, las tres tablas accesibles con la clave pública, `register_batches` presente y no ejecutable por `anon`, y escritura anónima rechazada. Devuelve código 1 si algo falla.
+
+Comprobaciones manuales en el SQL Editor:
 
 ```sql
 -- RLS activa en las tres tablas
@@ -157,7 +165,7 @@ En la aplicación:
 4. Abrir en otro dispositivo con la misma cuenta: mismos datos.
 5. Cerrar sesión: no se ve ningún dato.
 
-Estado: **implementado y compilado, sin verificar contra un proyecto Supabase real** (no hay credenciales todavía). Hasta ejecutar esta sección, la Fase 4 no se considera cerrada.
+Estado (2026-11-13): proyecto `hctnhfazszxkxcimadrm` accesible; **faltan las migraciones** (tablas no creadas) y el **registro público está abierto**. `check:supabase` devuelve 1/7 hasta completar los pasos. La Fase 4 no se considera cerrada.
 
 ## 9. Operación
 

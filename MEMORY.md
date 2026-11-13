@@ -39,4 +39,4 @@
 - **Fase:** desarrollo — Fases 0 a 3 cerradas; Fase 4 implementada y pendiente de verificación.
 - **Hecho:** análisis (Fase 0); scaffold, tipos, docs y CI (Fase 1); identidad visual y vistas (Fase 2); altas, validaciones y autocompletado (Fase 3); migraciones, RLS, RPC, servicio Supabase y pantalla de acceso (Fase 4, sin credenciales).
 - **Próximo:** verificar la Fase 4 con un proyecto Supabase real y continuar con la Fase 5 (avisos e indicadores con datos reales).
-- **Bloqueos:** proyecto Supabase pendiente (URL y anon key). Sin él no se puede ejecutar la verificación de `docs/TRD.md` §8.
+- **Bloqueos:** proyecto Supabase `hctnhfazszxkxcimadrm` accesible (2026-11-13) pero sin migraciones aplicadas y con registro público abierto; falta el usuario administrador. Comprobar con `pnpm run check:supabase`.
