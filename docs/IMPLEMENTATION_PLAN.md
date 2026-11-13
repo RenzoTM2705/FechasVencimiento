@@ -9,7 +9,7 @@
 | 0 | `docs/fase-0-analisis` | ✅ Hecha | Análisis documental y propuesta técnica (`docs/00-fase-0-analisis.md`) |
 | 1 | `feat/fase-1-scaffold` | ✅ Hecha | Scaffold Vite + TS + Tailwind, tipos, cliente Supabase, docs base, CI |
 | 2 | `feat/fase-2-interfaz` | ✅ Hecha | Identidad visual, header/footer, indicadores, filtros, tabla y tarjetas con datos simulados |
-| 3 | `feat/fase-3-registro` | ⏳ Pendiente | Alta individual y grupal, validaciones, autocompletado |
+| 3 | `feat/fase-3-registro` | ✅ Hecha | Alta individual y grupal, validaciones y autocompletado |
 | 4 | `feat/fase-4-supabase` | ⏳ Pendiente | Migraciones, RLS, RPC, CRUD real y sesión |
 | 5 | `feat/fase-5-vencimientos` | ⏳ Pendiente | Avisos, indicadores conectados y validación exhaustiva de umbrales |
 | 6 | `feat/fase-6-filtros` | ⏳ Pendiente | Búsqueda, filtros combinables, orden y contador |
@@ -57,6 +57,8 @@ Entregables:
 - Mensajes de error en español y bloqueo de doble envío.
 
 **Criterio de salida:** altas válidas e inválidas cubiertas por pruebas; sin datos que se pierdan al fallar.
+
+**Resultado (2026-11-13):** completada. Diálogos de alta individual y grupal sobre `<dialog>` nativo, autocompletado con patrón ARIA combobox, validación por campo y validación atómica del alta grupal (`validateBulk`: si una fila falla no se envía ninguna). Los datos siguen en memoria mediante `batches-service` con store suscribible (`useSyncExternalStore`); en la Fase 4 solo se cambia el servicio. 69 pruebas en verde (20 nuevas: validación, sugerencias y formularios).
 
 ## Fase 4 — Base de datos y persistencia
 

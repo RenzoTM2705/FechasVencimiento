@@ -1,11 +1,14 @@
 import { useMemo, useState } from 'react';
-import { Inbox } from 'lucide-react';
+import { Inbox, Plus, Rows3 } from 'lucide-react';
 import { Footer } from '@/components/layout/footer';
 import { Header } from '@/components/layout/header';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
 import { BatchCards } from '@/features/batches/batch-cards';
+import { BatchFormDialog } from '@/features/batches/batch-form-dialog';
 import { BatchTable } from '@/features/batches/batch-table';
+import { BulkFormDialog } from '@/features/batches/bulk-form-dialog';
+import { useBatches } from '@/features/batches/use-batches';
 import { IndicatorCards } from '@/features/dashboard/indicator-cards';
 import { FilterBar } from '@/features/filters/filter-bar';
 import {
@@ -16,44 +19,111 @@ import {
     responsibleOptions,
 } from '@/lib/filters';
 import { groupByProduct } from '@/lib/grouping';
-import { createMockBatches } from '@/lib/mock-data';
+import { uniqueProductNames } from '@/lib/products';
 import { useViewMode } from '@/lib/use-view-mode';
+import type { ValidatedBatch } from '@/lib/validation';
 import type { BatchFilters } from '@/types/domain';
 
-export default function App() {
-    const today = useMemo(() => new Date(), []);
-    const allBatches = useMemo(() => createMockBatches(today), [today]);
+type DialogMode = 'single' | 'bulk' | null;
 
+/**
+ * Atajo de desarrollo: `?demo=single` o `?demo=bulk` abre el formulario al
+ * cargar. Se elimina del build de producción (`import.meta.env.DEV` es falso).
+ */
+function initialDialog(): DialogMode {
+    if (!import.meta.env.DEV) return null;
+    const demo = new URLSearchParams(window.location.search).get('demo');
+    return demo === 'single' || demo === 'bulk' ? demo : null;
+}
+
+export default function App() {
+    const { batches, loading, error, createMany, refresh } = useBatches();
     const [filters, setFilters] = useState<BatchFilters>(DEFAULT_FILTERS);
     const [view, setView] = useViewMode();
+    const [dialog, setDialog] = useState<DialogMode>(initialDialog);
+    const [status, setStatus] = useState<string | null>(null);
 
-    const indicators = useMemo(() => computeIndicators(allBatches), [allBatches]);
-    const filtered = useMemo(() => applyFilters(allBatches, filters), [allBatches, filters]);
+    const indicators = useMemo(() => computeIndicators(batches), [batches]);
+    const filtered = useMemo(() => applyFilters(batches, filters), [batches, filters]);
     const groups = useMemo(() => groupByProduct(filtered), [filtered]);
-    const people = useMemo(() => responsibleOptions(allBatches), [allBatches]);
+    const people = useMemo(() => responsibleOptions(batches), [batches]);
+    const catalog = useMemo(() => uniqueProductNames(batches), [batches]);
     const filtersActive = hasActiveFilters(filters);
+    const isEmpty = batches.length === 0;
 
-    const updateFilters = (patch: Partial<BatchFilters>) =>
+    function updateFilters(patch: Partial<BatchFilters>) {
         setFilters((current) => ({ ...current, ...patch }));
+    }
+
+    function announce(message: string) {
+        setStatus(message);
+    }
+
+    async function handleCreateSingle(value: ValidatedBatch) {
+        await createMany([value]);
+        setDialog(null);
+        announce('Producto registrado.');
+    }
+
+    async function handleCreateBulk(values: ValidatedBatch[]) {
+        const count = await createMany(values);
+        setDialog(null);
+        announce(count === 1 ? 'Producto registrado.' : `${count} productos registrados.`);
+    }
 
     return (
         <div className="flex min-h-dvh flex-col">
             <Header />
 
             <main className="mx-auto w-full max-w-[1200px] flex-1 px-4 pt-6 pb-10 sm:px-6 lg:px-8">
-                <div className="mb-5">
-                    <h1 className="text-[26px] leading-tight font-semibold tracking-tight text-ink">
-                        Vencimientos
-                    </h1>
-                    <p className="mt-1 text-sm text-ink-soft">
-                        Consulta qué está por vencer y qué debes retirar hoy.
-                    </p>
+                <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+                    <div>
+                        <h1 className="text-[26px] leading-tight font-semibold tracking-tight text-ink">
+                            Vencimientos
+                        </h1>
+                        <p className="mt-1 text-sm text-ink-soft">
+                            Consulta qué está por vencer y qué debes retirar hoy.
+                        </p>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2">
+                        <Button variant="secondary" onClick={() => setDialog('bulk')}>
+                            <Rows3 size={16} aria-hidden="true" />
+                            Registrar varios
+                        </Button>
+                        <Button variant="primary" onClick={() => setDialog('single')}>
+                            <Plus size={16} aria-hidden="true" />
+                            Registrar producto
+                        </Button>
+                    </div>
                 </div>
 
                 {import.meta.env.DEV ? (
                     <p className="mb-4 rounded-control border border-warn-line bg-warn-soft px-3 py-2 text-[13px] text-warn">
-                        Datos de ejemplo de la Fase 2. La persistencia real se conecta en la Fase 4.
+                        Datos de ejemplo en memoria (Fases 2–3). La persistencia real se conecta en
+                        la Fase 4.
                     </p>
+                ) : null}
+
+                {status ? (
+                    <p
+                        role="status"
+                        className="mb-4 rounded-control border border-ok-line bg-ok-soft px-3 py-2 text-sm text-ok"
+                    >
+                        {status}
+                    </p>
+                ) : null}
+
+                {error ? (
+                    <div
+                        role="alert"
+                        className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-control border border-danger-line bg-danger-soft px-3 py-2 text-sm text-danger"
+                    >
+                        <span>{error}</span>
+                        <Button variant="secondary" size="sm" onClick={() => void refresh()}>
+                            Reintentar
+                        </Button>
+                    </div>
                 ) : null}
 
                 <IndicatorCards indicators={indicators} />
@@ -63,7 +133,7 @@ export default function App() {
                         filters={filters}
                         responsibleOptions={people}
                         resultCount={filtered.length}
-                        totalCount={allBatches.length}
+                        totalCount={batches.length}
                         view={view}
                         onChange={updateFilters}
                         onClear={() => setFilters(DEFAULT_FILTERS)}
@@ -72,14 +142,38 @@ export default function App() {
                 </div>
 
                 <div className="mt-4">
-                    {filtered.length === 0 ? (
+                    {loading && isEmpty ? (
+                        <div
+                            role="status"
+                            aria-live="polite"
+                            className="h-64 animate-pulse rounded-card border border-line bg-surface"
+                        >
+                            <span className="sr-only">Cargando registros…</span>
+                        </div>
+                    ) : filtered.length === 0 ? (
                         <EmptyState
                             icon={<Inbox size={20} aria-hidden="true" />}
-                            title="No encontramos registros con esos filtros"
-                            description="Prueba con otro producto, otro encargado o limpia los filtros para ver todo."
+                            title={
+                                isEmpty
+                                    ? 'Aún no hay productos registrados'
+                                    : 'No encontramos registros con esos filtros'
+                            }
+                            description={
+                                isEmpty
+                                    ? 'Registra el primer producto con su fecha de vencimiento para empezar a controlarlos.'
+                                    : 'Prueba con otro producto, otro encargado o limpia los filtros para ver todo.'
+                            }
                             action={
-                                filtersActive ? (
-                                    <Button onClick={() => setFilters(DEFAULT_FILTERS)}>
+                                isEmpty ? (
+                                    <Button variant="primary" onClick={() => setDialog('single')}>
+                                        <Plus size={16} aria-hidden="true" />
+                                        Registrar producto
+                                    </Button>
+                                ) : filtersActive ? (
+                                    <Button
+                                        variant="secondary"
+                                        onClick={() => setFilters(DEFAULT_FILTERS)}
+                                    >
                                         Limpiar filtros
                                     </Button>
                                 ) : undefined
@@ -94,6 +188,22 @@ export default function App() {
             </main>
 
             <Footer />
+
+            {dialog === 'single' ? (
+                <BatchFormDialog
+                    catalog={catalog}
+                    onClose={() => setDialog(null)}
+                    onSubmit={handleCreateSingle}
+                />
+            ) : null}
+
+            {dialog === 'bulk' ? (
+                <BulkFormDialog
+                    catalog={catalog}
+                    onClose={() => setDialog(null)}
+                    onSubmit={handleCreateBulk}
+                />
+            ) : null}
         </div>
     );
 }

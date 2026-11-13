@@ -95,6 +95,9 @@ docs/                  # PRD, TRD, UX, FLOW, plan, análisis de Fase 0
 | Vitest con `pool: 'threads'` | El pool de procesos lanza hijos con tuberías y falla con `EPERM` en entornos restringidos; los hilos no necesitan procesos externos | 2026-11-13 |
 | Paleta neutra + semáforo reservado | Verde, ámbar y rojo solo significan estado de vencimiento; el resto de la UI es tinta/gris/azul. Evita que un rojo decorativo se confunda con «vencido» | 2026-11-13 |
 | Una sola familia tipográfica (Inter) | Tabla densa y móvil: pesos y numerales tabulares bastan; evitar dos familias del pairing sugerido para retail | 2026-11-13 |
+| `<dialog>` nativo para formularios | Foco atrapado, fondo inerte, Escape y anuncio accesible sin dependencias de UI | 2026-11-13 |
+| Store suscribible con `useSyncExternalStore` | La carga de datos no usa `setState` dentro de un efecto (regla `react-hooks/set-state-in-effect`); el estado se comparte entre componentes | 2026-11-13 |
+| `batches-service` con interfaz propia | La Fase 4 sustituye la implementación en memoria por Supabase sin tocar componentes ni el hook | 2026-11-13 |
 
 ## Requisitos no funcionales
 
