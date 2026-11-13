@@ -23,7 +23,7 @@ import {
     responsibleOptions,
 } from '@/lib/filters';
 import { groupByProduct } from '@/lib/grouping';
-import { uniqueProductNames } from '@/lib/products';
+import { productOptions, uniqueProductNames } from '@/lib/products';
 import { useViewMode } from '@/lib/use-view-mode';
 import type { ValidatedBatch } from '@/lib/validation';
 import type { BatchFilters } from '@/types/domain';
@@ -53,6 +53,7 @@ export function DashboardPage() {
     const groups = useMemo(() => groupByProduct(filtered), [filtered]);
     const people = useMemo(() => responsibleOptions(batches), [batches]);
     const catalog = useMemo(() => uniqueProductNames(batches), [batches]);
+    const productCatalog = useMemo(() => productOptions(batches), [batches]);
     const filtersActive = hasActiveFilters(filters);
     const isEmpty = batches.length === 0;
     const immediateRemoval = indicators.dueToday + indicators.expired;
@@ -169,6 +170,7 @@ export function DashboardPage() {
                     <FilterBar
                         filters={filters}
                         responsibleOptions={people}
+                        productOptions={productCatalog}
                         resultCount={filtered.length}
                         totalCount={batches.length}
                         view={view}

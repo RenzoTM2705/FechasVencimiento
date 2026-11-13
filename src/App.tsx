@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { DashboardPage } from '@/app/dashboard-page';
 import { Logo } from '@/components/layout/logo';
 import { ConfigMissingPage } from '@/features/auth/config-missing-page';
@@ -22,11 +23,21 @@ function LoadingScreen() {
  * Puerta de entrada: configuración → sesión → panel.
  *
  * En desarrollo sin Supabase configurado se muestra el panel con datos de
- * ejemplo para poder revisar la interfaz; en producción se exige configuración.
+ * ejemplo; en producción se exige configuración.
+ *
+ * ACCESO DIRECTO TEMPORAL: con `VITE_ACCESO_DIRECTO=true` en `.env.local`, en
+ * desarrollo se inicia sesión automáticamente (ver dev-autologin.ts). El
+ * módulo se importa de forma dinámica dentro del bloque de desarrollo, así que
+ * el bundle de producción no lo incluye.
  */
 export default function App() {
     const configured = isConfigured();
     const { session, loading } = useSession();
+
+    useEffect(() => {
+        if (!import.meta.env.DEV) return;
+        void import('@/features/auth/dev-autologin').then((module) => module.autoLogin());
+    }, []);
 
     if (!configured) {
         return import.meta.env.DEV ? <DashboardPage /> : <ConfigMissingPage />;

@@ -43,6 +43,21 @@ Sin `VITE_SUPABASE_URL` ni `VITE_SUPABASE_ANON_KEY`:
 - **Desarrollo** (`pnpm dev`): el panel arranca con datos de ejemplo en memoria y un aviso visible. Nada se guarda.
 - **Producción** (`pnpm build`): se muestra una pantalla de configuración; la app no arranca con datos falsos.
 
+### Acceso directo (solo desarrollo)
+
+Para entrar sin escribir credenciales mientras se desarrolla, en `.env.local`:
+
+```bash
+VITE_ACCESO_DIRECTO=true
+VITE_ACCESO_DIRECTO_EMAIL=tu-correo
+VITE_ACCESO_DIRECTO_PASSWORD="tu-contraseña"
+```
+
+`pnpm dev` inicia sesión automáticamente y abre el panel. El módulo se carga con
+`import()` dinámico dentro de un bloque `import.meta.env.DEV`: el build de
+producción no lo incluye y las credenciales no llegan al bundle (verificado).
+En producción el acceso sigue siendo con correo y contraseña.
+
 ### Logotipo
 
 `public/logo.svg` es el favicon y `src/components/layout/logo.tsx` dibuja la marca del header. Ambos son un marcador: reemplázalos por el logotipo definitivo cuando esté disponible.

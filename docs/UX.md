@@ -88,7 +88,15 @@ Contrastes verificados sobre el fondo indicado: todos ≥ 4.5:1 para texto norma
 | **Tarjeta de producto** | Cabecera con nombre + contador de registros; lista de registros con riel de estado; «+N vencimientos adicionales» y «Ver todos» cuando hay más de 3. |
 | **Vacío / sin resultados** | Icono, frase clara y acción (`Registrar productos` o `Limpiar filtros`). |
 
-### 5.1 Avisos de retiro
+### 5.1 Búsqueda y filtros
+
+- **Fila principal:** buscador de producto, encargado, orden y botón **«Filtros»** con contador de filtros activos.
+- **Estados:** cinco chips conmutables (`Vigente`, `Próximo a vencer`, `Crítico`, `Vence hoy`, `Vencido`). Se combinan entre sí (OR) y con el resto de filtros (AND). Activo = fondo tinta, nunca color de estado, para no confundir filtro con semáforo.
+- **Panel avanzado** (oculto hasta pulsar «Filtros»): producto, fecha exacta, próximos 7/10/15/21/30 días, y rango desde/hasta. Elegir fecha exacta limpia el rango y viceversa.
+- **Pie:** «N de M registros», «Limpiar filtros» (solo si hay filtros activos) y el selector tabla/tarjetas.
+- Los filtros se aplican **antes** de agrupar las tarjetas, así que ninguna tarjeta muestra registros fuera del rango.
+
+### 5.2 Avisos de retiro
 
 Cuando la fecha ya se cumplió (`días ≤ 0`) el registro muestra, además de su etiqueta de estado, un aviso con el texto exacto **«FECHA CUMPLIDA, RETIRAR INMEDIATAMENTE»**:
 

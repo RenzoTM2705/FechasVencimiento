@@ -102,3 +102,27 @@ export function hasActiveFilters(filters: BatchFilters): boolean {
 export function responsibleOptions(batches: BatchView[]): string[] {
     return [...new Set(batches.map((batch) => batch.responsibleName))].sort(collator.compare);
 }
+
+/** Activa o desactiva un estado en el filtro múltiple, conservando el orden. */
+export function toggleStatus(
+    statuses: BatchFilters['statuses'],
+    status: BatchFilters['statuses'][number],
+): BatchFilters['statuses'] {
+    return statuses.includes(status)
+        ? statuses.filter((item) => item !== status)
+        : [...statuses, status];
+}
+
+/** Número de filtros activos (el orden no cuenta), para el indicador del botón. */
+export function activeFilterCount(filters: BatchFilters): number {
+    let count = 0;
+    if (filters.search.trim() !== '') count += 1;
+    if (filters.productId !== null) count += 1;
+    if (filters.responsible !== null) count += 1;
+    if (filters.dateExact !== null) count += 1;
+    if (filters.dateFrom !== null) count += 1;
+    if (filters.dateTo !== null) count += 1;
+    if (filters.dueWithinDays !== null) count += 1;
+    if (filters.statuses.length > 0) count += 1;
+    return count;
+}

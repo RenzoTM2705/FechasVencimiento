@@ -36,8 +36,9 @@
 
 ## Estado actual
 
-- **Fase:** desarrollo — Fases 0 a 5 cerradas; siguiente: Fase 6.
-- **Hecho:** análisis (Fase 0); scaffold y documentación (Fase 1); identidad visual y vistas (Fase 2); altas y autocompletado (Fase 3); base de datos, RLS y acceso verificados (Fase 4); avisos de retiro, distinción vence hoy/vencido e indicadores con datos reales (Fase 5).
-- **Verificación Supabase (2026-11-13):** `check:supabase` 7/7; E2E 9/9; prueba visual de la Fase 5 con 8 registros reales y limpieza posterior (0 lotes, 0 productos, 1 tienda).
-- **Próximo:** Fase 6 — filtros avanzados (fecha exacta, rango, próximos N días, estados múltiples) y orden.
-- **Bloqueos:** falta crear el usuario administrador definitivo en Supabase (no existe ninguno).
+- **Fase:** desarrollo — Fases 0 a 6 cerradas; siguiente: Fase 7.
+- **Hecho:** análisis (Fase 0); scaffold y documentación (Fase 1); identidad visual y vistas (Fase 2); altas y autocompletado (Fase 3); base de datos, RLS y acceso (Fase 4); avisos e indicadores (Fase 5); filtros combinables y panel avanzado (Fase 6).
+- **Verificación Supabase (2026-11-13):** `check:supabase` 7/7; E2E 9/9; pantallas verificadas con datos reales y limpieza posterior. Base final: 0 lotes, 0 productos, 1 tienda, 1 usuario administrador.
+- **Acceso directo (solo desarrollo):** activo en `.env.local` con `VITE_ACCESO_DIRECTO=true`. El módulo se carga con `import()` dinámico bajo `import.meta.env.DEV`; se comprobó que el build de producción no contiene las credenciales.
+- **Próximo:** Fase 7 — edición, eliminación con confirmación y exportación CSV/XLSX.
+- **Bloqueos:** ninguno para desarrollar; el usuario administrador ya existe (`admin@fechasvencimiento.local`).
