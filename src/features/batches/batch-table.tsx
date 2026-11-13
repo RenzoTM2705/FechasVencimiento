@@ -55,7 +55,10 @@ export function BatchTable({ batches, onEdit, onDelete }: BatchTableProps) {
                                     {header}
                                 </th>
                             ))}
-                            <th scope="col" className="px-3 py-2.5">
+                            <th
+                                scope="col"
+                                className="sticky right-0 border-l border-line bg-surface-sunken px-3 py-2.5"
+                            >
                                 <span className="sr-only">Acciones</span>
                             </th>
                         </tr>
@@ -109,7 +112,7 @@ export function BatchTable({ batches, onEdit, onDelete }: BatchTableProps) {
                                         />
                                     </div>
                                 </td>
-                                <td className="py-3 pr-3 pl-2">
+                                <td className="sticky right-0 border-l border-line bg-surface py-3 pr-3 pl-2">
                                     <RecordActions
                                         batch={batch}
                                         onEdit={onEdit}

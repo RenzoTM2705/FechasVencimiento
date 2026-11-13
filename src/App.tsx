@@ -4,7 +4,7 @@ import { Logo } from '@/components/layout/logo';
 import { ConfigMissingPage } from '@/features/auth/config-missing-page';
 import { LoginPage } from '@/features/auth/login-page';
 import { useSession } from '@/features/auth/use-session';
-import { isConfigured } from '@/lib/env';
+import { accessMode, isConfigured } from '@/lib/env';
 
 function LoadingScreen() {
     return (
@@ -42,6 +42,10 @@ export default function App() {
     if (!configured) {
         return import.meta.env.DEV ? <DashboardPage /> : <ConfigMissingPage />;
     }
+
+    // Modo público: sin pantalla de acceso. Requiere las políticas para `anon`
+    // de supabase/migrations/0005_modo_publico.sql. Ver README.
+    if (accessMode() === 'publico') return <DashboardPage />;
 
     if (loading) return <LoadingScreen />;
     if (!session) return <LoginPage />;

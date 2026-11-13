@@ -23,6 +23,20 @@ export function isConfigured(): boolean {
     return missingEnvVars().length === 0;
 }
 
+/**
+ * Modo de acceso de la aplicación.
+ *
+ * - `login` (por defecto): pantalla de acceso con correo y contraseña.
+ * - `publico`: sin login; la app usa la clave pública y las políticas RLS para
+ *   `anon`. **Implica que cualquiera con la URL puede leer y escribir.**
+ *
+ * Se activa solo con `VITE_MODO_ACCESO=publico` y requiere aplicar la migración
+ * `0005_modo_publico.sql`. Ver README, «Modo público».
+ */
+export function accessMode(): 'login' | 'publico' {
+    return import.meta.env.VITE_MODO_ACCESO === 'publico' ? 'publico' : 'login';
+}
+
 export function readEnv(): AppEnv {
     if (cached) return cached;
 
