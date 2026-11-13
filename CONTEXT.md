@@ -91,6 +91,8 @@ docs/                  # PRD, TRD, UX, FLOW, plan, análisis de Fase 0
 | `security invoker` en la RPC | Atomicidad sin saltarse RLS | 2026-11-13 |
 | Indicadores globales + contador de resultados | Evita ambigüedad entre "general" y "filtrado" (P-13 del análisis) | 2026-11-13 |
 | Preferencia de vista en `localStorage` | Solo UI; los datos de negocio siempre viven en Supabase | 2026-11-13 |
+| `node-linker=hoisted` en `pnpm-workspace.yaml` | Los enlaces simbólicos del linker aislado no se resuelven en algunos entornos Windows (ESLint: `Cannot find package '@humanfs/node'`; Vite: `Cannot find package 'rolldown'`). El árbol plano funciona igual en CI y Vercel | 2026-11-13 |
+| Vitest con `pool: 'threads'` | El pool de procesos lanza hijos con tuberías y falla con `EPERM` en entornos restringidos; los hilos no necesitan procesos externos | 2026-11-13 |
 
 ## Requisitos no funcionales
 

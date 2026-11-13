@@ -34,6 +34,8 @@ pnpm dev
 
 La aplicación queda en `http://localhost:5173`.
 
+> El proyecto usa `node-linker=hoisted` (`pnpm-workspace.yaml`) para evitar fallos de resolución en Windows con enlaces simbólicos. No requiere pasos extra: `pnpm install` lo respeta.
+
 ### Comandos
 
 | Comando | Qué hace |
