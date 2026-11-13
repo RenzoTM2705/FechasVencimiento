@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Inbox, Plus, Rows3 } from 'lucide-react';
+import { Inbox, Plus, Rows3, TriangleAlert } from 'lucide-react';
 import { Footer } from '@/components/layout/footer';
 import { Header } from '@/components/layout/header';
 import { Button } from '@/components/ui/button';
@@ -55,6 +55,7 @@ export function DashboardPage() {
     const catalog = useMemo(() => uniqueProductNames(batches), [batches]);
     const filtersActive = hasActiveFilters(filters);
     const isEmpty = batches.length === 0;
+    const immediateRemoval = indicators.dueToday + indicators.expired;
 
     function updateFilters(patch: Partial<BatchFilters>) {
         setFilters((current) => ({ ...current, ...patch }));
@@ -131,6 +132,33 @@ export function DashboardPage() {
                         <span>{error}</span>
                         <Button variant="secondary" size="sm" onClick={() => void refresh()}>
                             Reintentar
+                        </Button>
+                    </div>
+                ) : null}
+
+                {immediateRemoval > 0 ? (
+                    <div
+                        role="alert"
+                        className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-control border border-danger-line bg-danger-soft px-3 py-2.5 text-sm text-danger"
+                    >
+                        <p className="flex items-center gap-2">
+                            <TriangleAlert size={16} aria-hidden="true" className="shrink-0" />
+                            <span>
+                                <strong className="font-semibold">{immediateRemoval}</strong>{' '}
+                                {immediateRemoval === 1
+                                    ? 'registro tiene la fecha cumplida'
+                                    : 'registros tienen la fecha cumplida'}
+                                . Retíralos inmediatamente.
+                            </span>
+                        </p>
+                        <Button
+                            variant="danger"
+                            size="sm"
+                            onClick={() =>
+                                updateFilters({ statuses: ['vence_hoy', 'vencido'] })
+                            }
+                        >
+                            Ver solo estos
                         </Button>
                     </div>
                 ) : null}

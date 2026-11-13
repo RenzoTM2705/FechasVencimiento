@@ -7,6 +7,7 @@ import { describeDays } from '@/lib/expiry';
 import { formatDate, formatNumber, formatUnits } from '@/lib/format';
 import type { ProductGroup } from '@/lib/grouping';
 import type { BatchView, ExpiryStatus } from '@/types/domain';
+import { RemovalNotice } from './removal-notice';
 
 const RAIL: Record<ExpiryStatus, string> = {
     vigente: 'bg-ok',
@@ -44,9 +45,11 @@ function BatchRow({ batch }: { batch: BatchView }) {
                     </span>
                 </p>
                 {batch.daysRemaining <= 0 ? (
-                    <p className="mt-1 text-[11px] font-semibold tracking-[0.04em] text-danger uppercase">
-                        Fecha cumplida, retirar inmediatamente
-                    </p>
+                    <RemovalNotice
+                        days={batch.daysRemaining}
+                        status={batch.status}
+                        className="mt-1.5"
+                    />
                 ) : null}
             </div>
         </li>
