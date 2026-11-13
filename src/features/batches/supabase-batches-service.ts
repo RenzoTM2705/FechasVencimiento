@@ -77,11 +77,17 @@ type UpdateBatchRpc = (
     },
 ) => PromiseLike<UpdateBatchRpcResult>;
 
+function fail(error: unknown): never {
+    // Traza útil para soporte; el usuario ve el mensaje traducido.
+    console.error('[supabase]', error);
+    throw error;
+}
+
 /**
  * Implementación real contra Supabase.
  *
  * - Lectura: `product_batches` con el nombre del producto embebido.
- * - Escritura: RPC `register_batches`, transaccional y con RLS activa.
+ * - Escritura: RPC `register_batches` / `update_batch` (transaccionales, con RLS activa) y borrado directo.
  */
 export function createSupabaseBatchesService(): BatchesService {
     return {
@@ -93,7 +99,7 @@ export function createSupabaseBatchesService(): BatchesService {
                 )
                 .order('expiration_date', { ascending: true });
 
-            if (error) throw error;
+            if (error) fail(error);
 
             const today = new Date();
             return ((data ?? []) as unknown as BatchRow[]).map((row) => toView(row, today));
@@ -117,7 +123,7 @@ export function createSupabaseBatchesService(): BatchesService {
                 })),
             });
 
-            if (error) throw error;
+            if (error) fail(error);
 
             return typeof data === 'number' ? data : inputs.length;
         },
@@ -132,7 +138,7 @@ export function createSupabaseBatchesService(): BatchesService {
                 p_expiration_date: batch.expirationDate,
             });
 
-            if (error) throw error;
+            if (error) fail(error);
         },
 
         async remove(id) {
@@ -141,7 +147,7 @@ export function createSupabaseBatchesService(): BatchesService {
                 .delete()
                 .eq('id', id);
 
-            if (error) throw error;
+            if (error) fail(error);
         },
     };
 }

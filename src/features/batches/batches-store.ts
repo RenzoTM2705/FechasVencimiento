@@ -1,5 +1,6 @@
 import type { BatchView } from '@/types/domain';
-import { toFriendlyMessage } from '@/lib/errors';
+import { toFriendlyMessage, isSessionExpired } from '@/lib/errors';
+import { signOut } from '@/features/auth/auth-store';
 import type { NewBatch, UpdateBatch } from './batches-service';
 import { getBatchesService } from './service';
 
@@ -53,22 +54,37 @@ export async function refresh(): Promise<void> {
     }
 }
 
+/**
+ * Si el token caducó, se cierra la sesión para volver al acceso en lugar de
+ * dejar la app en un estado donde todo falla sin explicación.
+ */
+async function withSessionGuard<T>(action: () => Promise<T>): Promise<T> {
+    try {
+        return await action();
+    } catch (cause) {
+        if (isSessionExpired(cause)) {
+            void signOut().catch(() => undefined);
+        }
+        throw cause;
+    }
+}
+
 /** Guarda uno o varios registros; el alta es atómica en el servicio. */
 export async function addBatches(inputs: NewBatch[]): Promise<number> {
-    const count = await getBatchesService().createMany(inputs);
+    const count = await withSessionGuard(() => getBatchesService().createMany(inputs));
     await refresh();
     return count;
 }
 
 /** Edita un registro existente y recarga la lista. */
 export async function updateBatch(batch: UpdateBatch): Promise<void> {
-    await getBatchesService().update(batch);
+    await withSessionGuard(() => getBatchesService().update(batch));
     await refresh();
 }
 
 /** Elimina un registro y recarga la lista. */
 export async function removeBatch(id: string): Promise<void> {
-    await getBatchesService().remove(id);
+    await withSessionGuard(() => getBatchesService().remove(id));
     await refresh();
 }
 

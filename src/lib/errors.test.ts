@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { errorCode, isConnectionError, isInvalidCredentials, toFriendlyMessage } from './errors';
+import {
+    errorCode,
+    isConnectionError,
+    isInvalidCredentials,
+    isSessionExpired,
+    technicalCode,
+    toFriendlyMessage,
+} from './errors';
 
 describe('errorCode', () => {
     it('detecta los códigos elevados por la RPC', () => {
@@ -61,5 +68,56 @@ describe('toFriendlyMessage', () => {
 
     it('tolera errores lanzados como texto', () => {
         expect(toFriendlyMessage('PRODUCT_REQUIRED')).toBe('Ingresa el nombre del producto.');
+    });
+});
+
+describe('errores de Supabase', () => {
+    it('explica que faltan migraciones cuando no existe la función', () => {
+        const message = toFriendlyMessage({
+            code: 'PGRST202',
+            message: 'Could not find the function public.register_batches',
+        });
+
+        expect(message).toContain('migraciones');
+    });
+
+    it('explica que falta una tabla', () => {
+        const message = toFriendlyMessage({
+            code: 'PGRST205',
+            message: "Could not find the table 'public.product_batches'",
+        });
+
+        expect(message).toContain('Faltan tablas');
+    });
+
+    it('explica los problemas de permisos', () => {
+        expect(
+            toFriendlyMessage({ code: '42501', message: 'permission denied for table products' }),
+        ).toContain('permiso');
+        expect(
+            toFriendlyMessage({
+                message: 'new row violates row-level security policy for table "products"',
+            }),
+        ).toContain('permiso');
+    });
+
+    it('detecta y explica la sesión caducada', () => {
+        expect(isSessionExpired({ code: 'PGRST301', message: 'JWT expired' })).toBe(true);
+        expect(isSessionExpired({ message: 'JWT expired' })).toBe(true);
+        expect(toFriendlyMessage({ code: 'PGRST301', message: 'JWT expired' })).toContain(
+            'sesión caducó',
+        );
+    });
+
+    it('añade una referencia corta cuando el error es desconocido', () => {
+        const message = toFriendlyMessage({ code: 'XX000', message: 'algo raro' });
+
+        expect(message).toContain('ref: XX000');
+        expect(message).not.toContain('algo raro');
+    });
+
+    it('extrae el código técnico cuando existe', () => {
+        expect(technicalCode({ code: 'PGRST202' })).toBe('PGRST202');
+        expect(technicalCode({ message: 'sin código' })).toBeNull();
     });
 });
