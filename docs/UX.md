@@ -88,6 +88,20 @@ Contrastes verificados sobre el fondo indicado: todos ≥ 4.5:1 para texto norma
 | **Tarjeta de producto** | Cabecera con nombre + contador de registros; lista de registros con riel de estado; «+N vencimientos adicionales» y «Ver todos» cuando hay más de 3. |
 | **Vacío / sin resultados** | Icono, frase clara y acción (`Registrar productos` o `Limpiar filtros`). |
 
+### 5.1 Avisos de retiro
+
+Cuando la fecha ya se cumplió (`días ≤ 0`) el registro muestra, además de su etiqueta de estado, un aviso con el texto exacto **«FECHA CUMPLIDA, RETIRAR INMEDIATAMENTE»**:
+
+| Caso | Apariencia |
+|---|---|
+| Vence hoy (0 d) | Chip rojo sólido con texto blanco e icono de reloj de alarma |
+| Vencido (< 0 d) | Chip rojo oscuro con trama diagonal e icono de X |
+
+- El aviso aparece en **ambas vistas**: como chip bajo la etiqueta en la tabla y dentro de cada registro en las tarjetas.
+- Nunca se representa solo con color: el chip lleva texto y el estado tiene su propia etiqueta.
+- Sobre la lista, un **aviso resumen** (`role="alert"`) indica cuántos registros tienen la fecha cumplida y ofrece **«Ver solo estos»**, que aplica el filtro de estado a *Vence hoy* + *Vencido*.
+- El resumen cuenta registros, no cantidades, y no cambia con los filtros: refleja la situación real de la tienda.
+
 ## 6. Interacción
 
 - Transiciones de 150–200 ms en color y sombra; nada de desplazamientos llamativos.
