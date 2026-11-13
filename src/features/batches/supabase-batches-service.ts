@@ -96,8 +96,12 @@ async function withAuthRetry<T extends { error: { message: string } | null }>(
     const first = await run();
     if (!first.error || technicalCode(first.error) !== 'PGRST301') return first;
 
-    const { error: refreshError } = await getSupabase().auth.refreshSession();
-    if (refreshError) return first;
+    try {
+        const { error: refreshError } = await getSupabase().auth.refreshSession();
+        if (refreshError) return first;
+    } catch {
+        return first;
+    }
 
     return run();
 }
@@ -134,7 +138,9 @@ export function createSupabaseBatchesService(): BatchesService {
                 throw new Error('MIXED_RESPONSIBLE');
             }
 
-            const rpc = getSupabase().rpc as unknown as RegisterBatchesRpc;
+            // `rpc` usa `this.rest`: hay que conservar el contexto del cliente.
+            const client = getSupabase();
+            const rpc = client.rpc.bind(client) as unknown as RegisterBatchesRpc;
             const { data, error } = await withAuthRetry(() =>
                 rpc('register_batches', {
                     p_responsible: responsible,
@@ -154,7 +160,9 @@ export function createSupabaseBatchesService(): BatchesService {
         async update(batch) {
             await ensureFreshSession();
 
-            const rpc = getSupabase().rpc as unknown as UpdateBatchRpc;
+            // `rpc` usa `this.rest`: hay que conservar el contexto del cliente.
+            const client = getSupabase();
+            const rpc = client.rpc.bind(client) as unknown as UpdateBatchRpc;
             const { error } = await withAuthRetry(() =>
                 rpc('update_batch', {
                     p_id: batch.id,

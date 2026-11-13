@@ -68,6 +68,7 @@ export function BulkFormDialog({ catalog, onClose, onSubmit }: BulkFormDialogPro
         try {
             await onSubmit(result.values);
         } catch (cause) {
+            console.error('[formulario]', cause);
             setFormError(toFriendlyMessage(cause));
             setSubmitting(false);
         }
