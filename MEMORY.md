@@ -25,6 +25,8 @@
 
 - `SetNamedSecurityInfoW failed (Win32 5)` al escribir en el workspace — causa: faltaba `WRITE_OWNER` en la carpeta de trabajo — solución: reparación de permisos con el script de diagnóstico (2026-11-13).
 - `npx` falla con `EPERM` dentro del sandbox — causa: la caché de npm apunta fuera del workspace — solución: `npm_config_cache` dentro del workspace (2026-11-13).
+- Guardar un producto fallaba con `TypeError: Cannot read properties of undefined (reading 'rest')` y sin petición de red — causa: el método `rpc` del cliente se extraía a una constante y se llamaba sin `this`, y desde entonces no encontraba `this.rest` — solución: `client.rpc.bind(client)` + prueba de regresión `supabase-batches-service.test.ts` (2026-11-13).
+- Sesión inválida que impedía guardar y cerrar sesión (403 en `logout`) — causa: token firmado con una clave anterior; el cierre de sesión dependía del servidor — solución: refresco automático + reintento y limpieza local de la sesión si el servidor rechaza (2026-11-13).
 
 ## Preferencias de colaboración
 

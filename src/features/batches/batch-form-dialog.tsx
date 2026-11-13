@@ -51,6 +51,7 @@ export function BatchFormDialog({ catalog, onClose, onSubmit, initial }: BatchFo
         try {
             await onSubmit(result.value);
         } catch (cause) {
+            console.error('[formulario]', cause);
             setFormError(toFriendlyMessage(cause));
             setSubmitting(false);
         }
