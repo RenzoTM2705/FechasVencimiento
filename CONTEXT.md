@@ -103,6 +103,7 @@ docs/                  # PRD, TRD, UX, FLOW, plan, análisis de Fase 0
 | Sin Supabase configurado | Producción muestra pantalla de configuración; desarrollo usa memoria con aviso de modo demostración. Nunca se simula persistencia en producción | 2026-11-13 |
 | Migraciones por Management API | `POST /v1/projects/{ref}/database/query` con `read_only: false` aplica el SQL; `/database/migrations` exige el permiso `database_migrations_write` que el token inicial no tenía | 2026-11-13 |
 | Acceso directo solo en desarrollo | `dev-autologin.ts` se importa dinámicamente dentro de `import.meta.env.DEV` y crea una sesión real; el build de producción se verificó sin credenciales. En producción se mantiene correo y contraseña | 2026-11-13 |
+| Paleta derivada del logotipo del cliente | Amarillo `#FFBC00` para la cabecera y azul `#173E89` para marca e interacción; ambos extraídos de `logo.png`. El wordmark va recortado y transparente (`logo-mark.png`) para fundirse con el amarillo. Contrastes auditados: 5.96:1 azul sobre amarillo, 10.06:1 blanco sobre azul | 2026-11-13 |
 
 ## Requisitos no funcionales
 

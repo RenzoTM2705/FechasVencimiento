@@ -40,5 +40,6 @@
 - **Hecho:** todas las funcionalidades del alcance; QA de contraste, dependencias y responsive; checklists completados; modo de acceso configurable.
 - **Verificación Supabase (2026-11-13):** `check:supabase` 7/7; E2E de alta 9/9; CRUD 10/10; datos de prueba eliminados. Base final: 0 lotes, 0 productos, 1 tienda, 1 usuario administrador.
 - **Acceso:** login por defecto. `VITE_ACCESO_DIRECTO` (solo desarrollo) y `VITE_MODO_ACCESO=publico` (sin login, requiere `0005_modo_publico.sql` y aceptar que cualquiera con la URL puede leer y escribir).
+- **Marca:** paleta derivada del logotipo del cliente (Mass): cabecera amarilla `#FFBC00`, azul `#173E89` para marca e interacción. Wordmark recortado y transparente en `logo-mark.png`; favicon `logo.ico`.
 - **Pendiente para publicar:** autorización de despliegue, variables en Vercel, rotación de los tokens compartidos y prueba de restauración de backup.
 - **Bloqueos:** ninguno técnico.

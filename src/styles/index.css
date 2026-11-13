@@ -19,11 +19,13 @@
     --color-line: #e3e8ef;
     --color-line-strong: #cbd5e1;
 
-    /* Marca e interacción */
-    --color-brand: #0f172a;
-    --color-brand-hover: #1e293b;
-    --color-accent: #0b6fa4;
-    --color-accent-soft: #e7f2f9;
+    /* Marca e interacción — azul y amarillo del logotipo Mass */
+    --color-brand: #173e89;
+    --color-brand-hover: #12306b;
+    --color-header: #ffbc00;
+    --color-header-ink: #173e89;
+    --color-accent: #24509e;
+    --color-accent-soft: #e8eef9;
 
     /* Semáforo de vencimientos */
     --color-ok: #166534;

@@ -8,8 +8,8 @@
 
 Decisiones:
 
-- **Neutralidad al servicio del semáforo.** El fondo es gris frío muy claro y la tinta casi negra. El color saturado se reserva **exclusivamente** para los estados de vencimiento. Así, un rojo en pantalla significa siempre lo mismo y nunca compite con la marca.
-- **Marca contenida.** La cabecera usa tinta oscura (`--color-brand`); el acento azul (`--color-accent`) se usa solo en foco, enlaces y algún detalle. Nada de degradados.
+- **Neutralidad al servicio del semáforo.** El fondo es gris frío muy claro y la tinta casi negra. El color saturado se reserva **exclusivamente** para los estados de vencimiento y para la marca. Así, un rojo en pantalla significa siempre lo mismo y nunca compite con la marca.
+- **Marca de la tienda.** La cabecera usa el **amarillo del logotipo Mass** (`#FFBC00`) con el azul de la marca (`#173E89`) para el texto y el wordmark. El azul se reutiliza en botones primarios, selección y foco; el amarillo no se usa en ningún otro sitio para no confundirlo con el ámbar de «Próximo a vencer».
 - **Firma visual.** Cada fila y cada registro lleva un **riel de estado** (barra de 3 px a la izquierda) del color del semáforo. Es el elemento reconocible de la aplicación y funciona sin leer.
 - **Densidad controlada.** Tabla cómoda (no compacta) con cifras tabulares para que cantidades y fechas se alineen en columna.
 
@@ -29,9 +29,12 @@ Referencia de la skill `ui-ux-pro-max`: producto «Inventory & Stock Management�
 | `--color-ink-muted` | `#5F6E85` | Metadatos, ayudas (4.78:1 sobre el lienzo) |
 | `--color-line` | `#E3E8EF` | Hairlines, bordes de tarjeta |
 | `--color-line-strong` | `#CBD5E1` | Bordes de campos y separadores fuertes |
-| `--color-brand` | `#0F172A` | Cabecera, botón primario |
-| `--color-accent` | `#0B6FA4` | Foco, enlaces, detalle de marca |
-| `--color-accent-soft` | `#E7F2F9` | Fondo de foco/selección |
+| `--color-brand` | `#173E89` | Botón primario, selección, riel «Total» |
+| `--color-brand-hover` | `#12306B` | Hover del botón primario |
+| `--color-header` | `#FFBC00` | Fondo de la cabecera (amarillo del logotipo) |
+| `--color-header-ink` | `#173E89` | Texto y logotipo sobre la cabecera |
+| `--color-accent` | `#24509E` | Foco, enlaces |
+| `--color-accent-soft` | `#E8EEF9` | Fondo de foco/selección |
 
 ### Estados de vencimiento (semáforo)
 
@@ -48,7 +51,19 @@ Contrastes verificados sobre el fondo indicado: todos ≥ 4.5:1 para texto norma
 ### Regla de color
 
 - Verde, ámbar y rojo **solo** para estados de vencimiento. Nunca para botones, iconos decorativos ni cifras.
-- El resto de la interfaz es neutro: tinta, gris y azul de acento.
+- El **amarillo de marca** solo vive en la cabecera (y en el logotipo); si se usara en botones o avisos se confundiría con «Próximo a vencer».
+- El **azul de marca** indica interacción: botón primario, selección, foco y enlaces.
+- El resto de la interfaz es neutro: tinta, gris y blanco.
+
+### Marca
+
+| Archivo | Uso |
+|---|---|
+| `public/logo.ico` | Favicon |
+| `public/logo.png` | Logotipo original del cliente (apple-touch-icon y respaldo) |
+| `public/logo-mark.png` | Versión recortada y con fondo transparente para la cabecera, el acceso y la pantalla de carga |
+
+El wordmark se coloca directamente sobre el amarillo de la cabecera: al compartir el mismo amarillo, el fondo del logotipo desaparece y solo se ve el azul «Mass ✓».
 
 ## 3. Tipografía
 
@@ -78,7 +93,7 @@ Contrastes verificados sobre el fondo indicado: todos ≥ 4.5:1 para texto norma
 
 | Componente | Reglas |
 |---|---|
-| **Header** | Sticky, fondo tinta, 56 px de alto. Espacio de logo 36 px (reemplazable), nombre de la app, fecha del día a la derecha. Sin navegación: no hay rutas. |
+| **Header** | Sticky, fondo amarillo de marca, 56 px de alto. Logotipo «Mass» sobre el amarillo, nombre de la app separado por una línea, fecha del día y cierre de sesión en azul de marca. Sin navegación: no hay rutas. |
 | **Footer** | Hairline superior, texto 13 px: nombre, descripción de una línea y año actual. |
 | **Indicador** | Panel blanco con riel superior de 3 px, micro-etiqueta, cifra grande tabular y leyenda corta. 2 columnas en móvil, 4 en escritorio. |
 | **Botón** | Primario (tinta), secundario (borde), fantasma (texto), peligro. Foco visible con anillo azul de 2 px. |
