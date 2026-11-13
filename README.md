@@ -94,7 +94,7 @@ Regla de arquitectura: **la UI nunca calcula días restantes ni estados**. Todo 
 | [MEMORY.md](MEMORY.md) | Decisiones cerradas, restricciones y estado |
 | [docs/PRD.md](docs/PRD.md) | Requisitos funcionales, umbrales y criterios de aceptación |
 | [docs/TRD.md](docs/TRD.md) | Modelo de datos, RLS, RPC y operación |
-| `docs/UX.md` | Identidad visual, tokens, componentes y responsive (se crea en la Fase 2) |
+| [docs/UX.md](docs/UX.md) | Identidad visual, tokens, componentes y responsive |
 | [docs/FLOW.md](docs/FLOW.md) | Flujos de usuario |
 | [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md) | Fases, riesgos y estado del proyecto |
 | [docs/00-fase-0-analisis.md](docs/00-fase-0-analisis.md) | Análisis documental y decisiones de arranque |

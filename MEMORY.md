@@ -36,7 +36,7 @@
 
 ## Estado actual
 
-- **Fase:** desarrollo — Fases 0 y 1 completadas.
-- **Hecho:** análisis documental (Fase 0); scaffold Vite + React + TS + Tailwind, cliente Supabase, tipos, documentación base, CI y repo Git por ramas (Fase 1).
-- **Próximo:** Fase 2 — identidad visual e interfaz con datos simulados.
+- **Fase:** desarrollo — Fases 0, 1 y 2 completadas.
+- **Hecho:** análisis documental (Fase 0); scaffold, cliente Supabase, tipos, docs y CI (Fase 1); identidad visual, componentes base, indicadores, filtros, tabla y tarjetas con datos simulados (Fase 2).
+- **Próximo:** Fase 3 — alta individual y grupal, validaciones y autocompletado.
 - **Bloqueos:** proyecto Supabase y repositorio GitHub pendientes de creación por el cliente (no bloquean las Fases 1–3).
