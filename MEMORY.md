@@ -36,7 +36,7 @@
 
 ## Estado actual
 
-- **Fase:** desarrollo — Fases 0, 1 y 2 completadas.
-- **Hecho:** análisis documental (Fase 0); scaffold, cliente Supabase, tipos, docs y CI (Fase 1); identidad visual, componentes base, indicadores, filtros, tabla y tarjetas con datos simulados (Fase 2).
-- **Próximo:** Fase 3 — alta individual y grupal, validaciones y autocompletado.
-- **Bloqueos:** proyecto Supabase y repositorio GitHub pendientes de creación por el cliente (no bloquean las Fases 1–3).
+- **Fase:** desarrollo — Fases 0 a 3 completadas.
+- **Hecho:** análisis (Fase 0); scaffold, tipos, docs y CI (Fase 1); identidad visual, indicadores, filtros, tabla y tarjetas (Fase 2); alta individual y grupal, validaciones y autocompletado (Fase 3).
+- **Próximo:** Fase 4 — migraciones SQL, RLS, RPC, servicios reales y sesión.
+- **Bloqueos:** proyecto Supabase pendiente (URL y anon key). Sin él, la Fase 4 no puede cerrarse; las fases anteriores no dependen de ello.
