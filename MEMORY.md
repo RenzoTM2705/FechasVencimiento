@@ -36,8 +36,8 @@
 
 ## Estado actual
 
-- **Fase:** desarrollo — Fases 0 a 4 cerradas; siguiente: Fase 5.
-- **Hecho:** análisis (Fase 0); scaffold, tipos, docs y CI (Fase 1); identidad visual y vistas (Fase 2); altas, validaciones y autocompletado (Fase 3); base de datos, RLS, RPC, servicios y acceso verificados contra Supabase real (Fase 4).
-- **Verificación Supabase (2026-11-13):** proyecto `hctnhfazszxkxcimadrm`, migraciones aplicadas, registro público desactivado, `check:supabase` 7/7 y E2E 9/9 con usuario temporal eliminado después.
-- **Próximo:** Fase 5 — avisos de retiro, distinción vence hoy/vencido e indicadores con datos reales.
+- **Fase:** desarrollo — Fases 0 a 5 cerradas; siguiente: Fase 6.
+- **Hecho:** análisis (Fase 0); scaffold y documentación (Fase 1); identidad visual y vistas (Fase 2); altas y autocompletado (Fase 3); base de datos, RLS y acceso verificados (Fase 4); avisos de retiro, distinción vence hoy/vencido e indicadores con datos reales (Fase 5).
+- **Verificación Supabase (2026-11-13):** `check:supabase` 7/7; E2E 9/9; prueba visual de la Fase 5 con 8 registros reales y limpieza posterior (0 lotes, 0 productos, 1 tienda).
+- **Próximo:** Fase 6 — filtros avanzados (fecha exacta, rango, próximos N días, estados múltiples) y orden.
 - **Bloqueos:** falta crear el usuario administrador definitivo en Supabase (no existe ninguno).

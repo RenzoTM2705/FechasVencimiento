@@ -1,4 +1,5 @@
 import { StatusBadge } from '@/components/ui/status-badge';
+import { RemovalNotice } from './removal-notice';
 import { cn } from '@/lib/cn';
 import { describeDays } from '@/lib/expiry';
 import { formatDate, formatNumber } from '@/lib/format';
@@ -91,6 +92,11 @@ export function BatchTable({ batches }: { batches: BatchView[] }) {
                                             {describeDays(batch.daysRemaining)}
                                         </span>
                                         <StatusBadge status={batch.status} />
+                                        <RemovalNotice
+                                            days={batch.daysRemaining}
+                                            status={batch.status}
+                                            className="mt-0.5"
+                                        />
                                     </div>
                                 </td>
                             </tr>

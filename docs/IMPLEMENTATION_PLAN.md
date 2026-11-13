@@ -11,7 +11,7 @@
 | 2 | `feat/fase-2-interfaz` | ✅ Hecha | Identidad visual, header/footer, indicadores, filtros, tabla y tarjetas con datos simulados |
 | 3 | `feat/fase-3-registro` | ✅ Hecha | Alta individual y grupal, validaciones y autocompletado |
 | 4 | `feat/fase-4-supabase` | ✅ Hecha y verificada | Migraciones, RLS, RPC, servicios reales y sesión |
-| 5 | `feat/fase-5-vencimientos` | ⏳ Pendiente | Avisos, indicadores conectados y validación exhaustiva de umbrales |
+| 5 | `feat/fase-5-vencimientos` | ✅ Hecha | Avisos, indicadores conectados y validación de umbrales |
 | 6 | `feat/fase-6-filtros` | ⏳ Pendiente | Búsqueda, filtros combinables, orden y contador |
 | 7 | `feat/fase-7-crud-export` | ⏳ Pendiente | Edición, eliminación, exportación CSV/XLSX |
 | 8 | `docs/fase-8-qa-deploy` | ⏳ Pendiente | QA responsive/a11y, checklists, README final y Vercel |
@@ -79,6 +79,8 @@ Entregables:
 - Indicadores conectados a datos reales.
 
 **Criterio de salida:** los siete casos producen el estado esperado y los indicadores cuadran con la tabla.
+
+**Resultado (2026-11-13):** completada y comprobada con datos reales en Supabase (8 registros: 1 vencido, 2 vencen hoy, 3 críticos, 1 próximo y 1 vigente). Indicadores 8/4/2/1 y aviso resumen «3 registros tienen la fecha cumplida» coinciden con la base. Se añadió `RemovalNotice` (chip con el texto obligatorio, distinto para vence hoy y vencido), el aviso resumen con «Ver solo estos», y 4 pruebas del componente (75 en total). Los datos de prueba se eliminaron al terminar: la base quedó en 0 lotes, 0 productos y 1 tienda.
 
 ## Fase 6 — Búsqueda y filtros
 
