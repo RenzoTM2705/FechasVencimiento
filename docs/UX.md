@@ -96,7 +96,14 @@ Contrastes verificados sobre el fondo indicado: todos ≥ 4.5:1 para texto norma
 - **Pie:** «N de M registros», «Limpiar filtros» (solo si hay filtros activos) y el selector tabla/tarjetas.
 - Los filtros se aplican **antes** de agrupar las tarjetas, así que ninguna tarjeta muestra registros fuera del rango.
 
-### 5.2 Avisos de retiro
+### 5.3 Acciones, edición y exportación
+
+- **Acciones por registro:** dos botones discretos al final de la fila (lápiz y papelera) y junto al estado en las tarjetas. Etiqueta accesible con producto y fecha (`Editar Leche Gloria del 2026-11-13`).
+- **Edición:** reutiliza el diálogo de alta en modo edición; el encargado, producto, cantidad y fecha se precargan, y el aviso recuerda que los demás registros del producto no se tocan.
+- **Eliminación:** diálogo modal con la pregunta de confirmación, resumen del registro (producto, encargado, cantidad, vencimiento y días) y botón de peligro. Nunca elimina sin confirmación.
+- **Exportación:** diálogo con dos decisiones — formato (CSV o Excel) y alcance (todos o solo los filtrados, con el número de registros). El archivo incluye estado y días calculados en ese momento; una fila por registro.
+
+### 5.4 Avisos de retiro
 
 Cuando la fecha ya se cumplió (`días ≤ 0`) el registro muestra, además de su etiqueta de estado, un aviso con el texto exacto **«FECHA CUMPLIDA, RETIRAR INMEDIATAMENTE»**:
 

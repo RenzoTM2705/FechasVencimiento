@@ -94,8 +94,14 @@ Todo ocurre en la transacción de la llamada: **si una fila falla, no se guarda 
 | `PRODUCT_TOO_LONG` | > 120 caracteres | El nombre del producto no puede superar 120 caracteres. |
 | `INVALID_QUANTITY` | Cantidad ≤ 0 o nula | La cantidad debe ser mayor que cero. |
 | `INVALID_DATE` | Fecha nula o inválida | Selecciona una fecha de vencimiento válida. |
+| `BATCH_NOT_FOUND` | El id no existe en `product_batches` | El registro ya no existe. Actualiza la página e inténtalo nuevamente. |
 
 El mapeo vive en `src/lib/errors.ts`.
+
+### 5.1 Edición y eliminación
+
+- **Edición:** RPC `update_batch(p_id, p_responsible, p_product_name, p_quantity, p_expiration_date)` con las mismas validaciones que el alta. Resuelve o crea el producto del catálogo y actualiza solo esa fila; el resto de registros del producto queda intacto. Devuelve `204` (función `void`).
+- **Eliminación:** `DELETE /rest/v1/product_batches?id=eq.<id>` con la sesión del administrador. RLS lo permite y solo borra esa fila; los demás registros del mismo producto permanecen.
 
 ## 6. Migraciones
 
@@ -106,6 +112,7 @@ Archivos en `supabase/migrations/`, en orden:
 | `0001_core.sql` | Tablas, tienda sembrada, normalización, triggers e índices |
 | `0002_rls.sql` | RLS y políticas |
 | `0003_rpc.sql` | `register_batches` y permisos |
+| `0004_crud.sql` | `update_batch` y permisos |
 
 Procedimiento (SQL Editor de Supabase, uno por uno):
 
@@ -167,11 +174,12 @@ En la aplicación:
 
 Estado (2026-11-13): **verificado contra el proyecto real** `hctnhfazszxkxcimadrm`.
 
-- Migraciones `0001`–`0003` aplicadas (8 políticas RLS, 4 índices, trigger de normalización activo, `register_batches` con `prosecdef = false`).
+- Migraciones `0001`–`0004` aplicadas (8 políticas RLS, 4 índices, trigger de normalización activo, RPC `register_batches` y `update_batch` con `prosecdef = false`).
 - Registro público desactivado vía Management API.
 - `pnpm run check:supabase` → **7/7**.
-- Prueba E2E con usuario temporal: inicio de sesión, alta de 2 lotes por RPC (mismo producto con mayúsculas y espacios distintos → un solo registro de catálogo), rechazo de alta con fila inválida sin dejar registros parciales, y limpieza completa. **9/9**.
-- Pendiente: crear el usuario administrador definitivo (no existe ninguno en el proyecto).
+- Prueba E2E de alta con usuario temporal: inicio de sesión, alta de 2 lotes por RPC (mismo producto con mayúsculas y espacios distintos → un solo registro de catálogo), rechazo de alta con fila inválida sin dejar registros parciales, y limpieza completa. **9/9**.
+- CRUD contra la base real: alta, edición por `update_batch` (cantidad y fecha actualizadas, nombre del catálogo intacto), rechazo de cantidad inválida y eliminación. **10/10**.
+- Usuario administrador creado y confirmado (`admin@fechasvencimiento.local`).
 
 ## 9. Operación
 
