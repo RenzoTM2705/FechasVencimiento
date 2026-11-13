@@ -35,12 +35,18 @@ type DialogMode = 'single' | 'bulk' | null;
 
 /**
  * Atajo de desarrollo: `?demo=single` o `?demo=bulk` abre el formulario al
- * cargar. Se elimina del build de producción (`import.meta.env.DEV` es falso).
+ * cargar y `?exportar=1` abre el diálogo de exportación. Se elimina del build
+ * de producción (`import.meta.env.DEV` es falso).
  */
 function initialDialog(): DialogMode {
     if (!import.meta.env.DEV) return null;
     const demo = new URLSearchParams(window.location.search).get('demo');
     return demo === 'single' || demo === 'bulk' ? demo : null;
+}
+
+function initialExport(): boolean {
+    if (!import.meta.env.DEV) return false;
+    return new URLSearchParams(window.location.search).get('exportar') === '1';
 }
 
 export function DashboardPage() {
@@ -52,7 +58,7 @@ export function DashboardPage() {
     const [dialog, setDialog] = useState<DialogMode>(initialDialog);
     const [editing, setEditing] = useState<BatchView | null>(null);
     const [deleting, setDeleting] = useState<BatchView | null>(null);
-    const [exporting, setExporting] = useState(false);
+    const [exporting, setExporting] = useState(initialExport);
     const [status, setStatus] = useState<string | null>(null);
 
     const indicators = useMemo(() => computeIndicators(batches), [batches]);
