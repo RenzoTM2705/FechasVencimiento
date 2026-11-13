@@ -58,6 +58,7 @@ Sin `VITE_SUPABASE_URL` ni `VITE_SUPABASE_ANON_KEY`:
 | `pnpm typecheck` | TypeScript sin emitir |
 | `pnpm test` | Vitest en modo watch |
 | `pnpm test:run` | Vitest una vez (usado por CI) |
+| `pnpm run check:supabase` | Verifica conexión, RLS y RPC contra el proyecto configurado |
 
 ## Base de datos
 
