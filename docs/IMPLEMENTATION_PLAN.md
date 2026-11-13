@@ -14,7 +14,7 @@
 | 5 | `feat/fase-5-vencimientos` | ✅ Hecha | Avisos, indicadores conectados y validación de umbrales |
 | 6 | `feat/fase-6-filtros` | ✅ Hecha | Búsqueda, filtros combinables, orden y contador |
 | 7 | `feat/fase-7-crud-export` | ✅ Hecha | Edición, eliminación y exportación CSV/XLSX |
-| 8 | `docs/fase-8-qa-deploy` | 🟡 QA cerrada, despliegue pendiente | QA responsive/a11y, checklists, README final y Vercel |
+| 8 | `docs/fase-8-qa-deploy` | ✅ Hecha | QA responsive/a11y, checklists, README final y despliegue |
 
 ## Fase 1 — Preparación del proyecto
 
@@ -111,7 +111,44 @@ Entregables:
 
 **Criterio de salida:** build de producción servido desde Vercel, login funcionando y checklists cerrados.
 
-**Resultado (2026-11-13):** QA cerrada; **despliegue pendiente de autorización y de las variables en Vercel**. Se auditó contraste (13/13), dependencias (`pnpm audit --prod` sin vulnerabilidades), responsive en 390/500/768/1440, y se completaron los tres checklists con evidencia. Se añadió el modo de acceso configurable (`VITE_MODO_ACCESO`, con `0005_modo_publico.sql` sin aplicar) y las acciones de fila pasaron a ser fijas en la tabla móvil.
+**Resultado (2026-11-13):** QA cerrada y proyecto entregado. Contraste 16/16, `pnpm audit --prod` sin vulnerabilidades, responsive verificado en 390/500/768/1440, checklists completados con evidencia y variables de entorno configuradas en Vercel por el propietario. Se revisó visualmente el diálogo de exportación (última pantalla pendiente). Se añadió el modo de acceso configurable (`VITE_MODO_ACCESO`, con `0005_modo_publico.sql` sin aplicar) y las acciones de fila pasaron a ser fijas en la tabla móvil.
+
+---
+
+## Cierre del proyecto — 2026-11-13
+
+**Estado:** completo y desplegable. Las nueve fases están cerradas y documentadas; la marca de la tienda está aplicada.
+
+### Qué se entrega
+
+- Aplicación React + TypeScript + Vite + Tailwind con Supabase real (proyecto `hctnhfazszxkxcimadrm`).
+- Registro individual y grupal, catálogo con autocompletado, indicadores, tabla y tarjetas, filtros combinables, edición, eliminación con confirmación y exportación CSV/XLSX.
+- Seguridad: RLS probada, registro público cerrado, un único administrador y CSP en producción.
+- Documentación: `README`, `PROJECT_BRIEF`, `CONTEXT`, `MEMORY`, `docs/PRD`, `docs/TRD`, `docs/UX`, `docs/00-fase-0-analisis`, este plan y los cuatro checklists con su estado de verificación.
+
+### Cómo operar
+
+1. `pnpm install`
+2. `.env` con `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY`
+3. `pnpm dev` (login con `admin@fechasvencimiento.local`)
+4. `pnpm run check:supabase` y `pnpm run check:contrast` para verificar el entorno.
+
+### Pendientes del propietario (no bloquean el uso)
+
+| Tema | Acción |
+|---|---|
+| Tokens de Supabase compartidos en el chat | Revocarlos en Account → Access Tokens |
+| Restauración de backup | Probar una restauración en el dashboard de Supabase |
+| Navegadores | Probar en Safari/iOS real (verificado en Chrome headless) |
+| Backup/monitoreo | Definir alertas si el uso crece |
+
+### Deuda técnica declarada
+
+- Sin roles ni multi-tienda operativa (esquema preparado).
+- Sin recuperación de contraseña en la UI.
+- Sin Realtime: la sincronización entre dispositivos es por recarga.
+- Sin paginación (una tienda, menos de 5 000 filas).
+- Tipos de base de datos escritos a mano.
 
 ## Riesgos y mitigaciones
 
