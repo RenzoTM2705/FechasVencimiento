@@ -1,6 +1,8 @@
 import type { BatchView } from '@/types/domain';
 import { daysRemaining, statusFor } from '@/lib/expiry';
 import { getSupabase } from '@/lib/supabase';
+import { technicalCode } from '@/lib/errors';
+import { ensureFreshSession } from '@/features/auth/auth-store';
 import type { BatchesService, NewBatch } from './batches-service';
 
 interface ProductRelation {
@@ -84,6 +86,23 @@ function fail(error: unknown): never {
 }
 
 /**
+ * Si el token caducó (`PGRST301`), intenta refrescar la sesión una vez y
+ * repite la operación. Si el refresco no es posible (token inválido por
+ * rotación de claves), devuelve el error original y el store cierra la sesión.
+ */
+async function withAuthRetry<T extends { error: { message: string } | null }>(
+    run: () => PromiseLike<T>,
+): Promise<T> {
+    const first = await run();
+    if (!first.error || technicalCode(first.error) !== 'PGRST301') return first;
+
+    const { error: refreshError } = await getSupabase().auth.refreshSession();
+    if (refreshError) return first;
+
+    return run();
+}
+
+/**
  * Implementación real contra Supabase.
  *
  * - Lectura: `product_batches` con el nombre del producto embebido.
@@ -108,20 +127,24 @@ export function createSupabaseBatchesService(): BatchesService {
         async createMany(inputs: NewBatch[]) {
             if (inputs.length === 0) return 0;
 
+            await ensureFreshSession();
+
             const responsible = inputs[0].responsibleName;
             if (inputs.some((input) => input.responsibleName !== responsible)) {
                 throw new Error('MIXED_RESPONSIBLE');
             }
 
             const rpc = getSupabase().rpc as unknown as RegisterBatchesRpc;
-            const { data, error } = await rpc('register_batches', {
-                p_responsible: responsible,
-                p_rows: inputs.map((input) => ({
-                    product_name: input.productName,
-                    quantity: input.quantity,
-                    expiration_date: input.expirationDate,
-                })),
-            });
+            const { data, error } = await withAuthRetry(() =>
+                rpc('register_batches', {
+                    p_responsible: responsible,
+                    p_rows: inputs.map((input) => ({
+                        product_name: input.productName,
+                        quantity: input.quantity,
+                        expiration_date: input.expirationDate,
+                    })),
+                }),
+            );
 
             if (error) fail(error);
 
@@ -129,23 +152,28 @@ export function createSupabaseBatchesService(): BatchesService {
         },
 
         async update(batch) {
+            await ensureFreshSession();
+
             const rpc = getSupabase().rpc as unknown as UpdateBatchRpc;
-            const { error } = await rpc('update_batch', {
-                p_id: batch.id,
-                p_responsible: batch.responsibleName,
-                p_product_name: batch.productName,
-                p_quantity: batch.quantity,
-                p_expiration_date: batch.expirationDate,
-            });
+            const { error } = await withAuthRetry(() =>
+                rpc('update_batch', {
+                    p_id: batch.id,
+                    p_responsible: batch.responsibleName,
+                    p_product_name: batch.productName,
+                    p_quantity: batch.quantity,
+                    p_expiration_date: batch.expirationDate,
+                }),
+            );
 
             if (error) fail(error);
         },
 
         async remove(id) {
-            const { error } = await getSupabase()
-                .from('product_batches')
-                .delete()
-                .eq('id', id);
+            await ensureFreshSession();
+
+            const { error } = await withAuthRetry(() =>
+                getSupabase().from('product_batches').delete().eq('id', id),
+            );
 
             if (error) fail(error);
         },

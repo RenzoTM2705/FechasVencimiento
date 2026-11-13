@@ -57,7 +57,33 @@ export async function signIn(email: string, password: string): Promise<void> {
     if (error) throw error;
 }
 
+/**
+ * Cierra la sesión.
+ *
+ * Si el servidor rechaza la revocación (por ejemplo, con un token ya inválido),
+ * se limpia igualmente la sesión local para que la persona pueda volver a
+ * entrar. Sin esto, un token caducado dejaba la app atrapada: no se podía
+ * cerrar sesión y todas las operaciones fallaban.
+ */
 export async function signOut(): Promise<void> {
-    const { error } = await getSupabase().auth.signOut();
-    if (error) throw error;
+    const supabase = getSupabase();
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+        await supabase.auth.signOut({ scope: 'local' }).catch(() => undefined);
+    }
+}
+
+/** Refresca la sesión si está a punto de caducar (margen de 2 minutos). */
+export async function ensureFreshSession(): Promise<void> {
+    const supabase = getSupabase();
+    const { data } = await supabase.auth.getSession();
+    const session = data.session;
+
+    if (!session) return;
+
+    const endsAt = (session.expires_at ?? 0) * 1000;
+    if (endsAt - Date.now() < 120_000) {
+        await supabase.auth.refreshSession();
+    }
 }
