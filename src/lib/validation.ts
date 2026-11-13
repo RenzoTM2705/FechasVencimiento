@@ -114,6 +114,26 @@ export interface BulkValidationResult {
     values: ValidatedBatch[] | null;
 }
 
+export interface LoginDraft {
+    email: string;
+    password: string;
+}
+
+export type LoginErrors = Partial<Record<keyof LoginDraft, string>>;
+
+/** Validación del acceso: solo formato, las credenciales las comprueba Supabase. */
+export function validateLogin(draft: LoginDraft): LoginErrors {
+    const errors: LoginErrors = {};
+    const email = draft.email.trim();
+
+    if (email === '') errors.email = 'Ingresa tu correo.';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = 'Ingresa un correo válido.';
+
+    if (draft.password === '') errors.password = 'Ingresa tu contraseña.';
+
+    return errors;
+}
+
 /**
  * Valida el alta grupal completa. Ninguna fila se guarda si alguna falla:
  * el llamador recibe los errores por fila y no debe enviar nada.

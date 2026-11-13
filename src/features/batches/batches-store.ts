@@ -1,14 +1,14 @@
 import type { BatchView } from '@/types/domain';
 import { toFriendlyMessage } from '@/lib/errors';
-import { getBatchesService, type NewBatch } from './batches-service';
+import type { NewBatch } from './batches-service';
+import { getBatchesService } from './service';
 
 /**
  * Estado compartido de los registros.
  *
  * Se implementa como store externo suscribible para que `useBatches` use
  * `useSyncExternalStore`: la carga inicial actualiza el estado cuando la
- * promesa resuelve, sin `setState` dentro de un efecto. En la Fase 4 solo
- * cambia el servicio que hay detrás.
+ * promesa resuelve, sin `setState` dentro de un efecto.
  */
 
 export interface BatchesState {
@@ -55,7 +55,16 @@ export async function refresh(): Promise<void> {
 
 /** Guarda uno o varios registros; el alta es atómica en el servicio. */
 export async function addBatches(inputs: NewBatch[]): Promise<number> {
-    const created = await getBatchesService().createMany(inputs);
+    const count = await getBatchesService().createMany(inputs);
     await refresh();
-    return created.length;
+    return count;
+}
+
+/**
+ * Vacía el estado al cerrar sesión y obliga a recargar en el siguiente acceso,
+ * para no mostrar datos de la sesión anterior.
+ */
+export function resetBatchesStore(): void {
+    started = false;
+    publish({ batches: [], loading: true, error: null });
 }

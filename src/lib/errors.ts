@@ -13,6 +13,9 @@ const ERROR_MESSAGES: Record<string, string> = {
     INVALID_DATE: 'Selecciona una fecha de vencimiento válida.',
     ROWS_REQUIRED: 'Agrega al menos un producto antes de guardar.',
     PRODUCT_NAME_REQUIRED: 'Ingresa el nombre del producto.',
+    RESPONSIBLE_TOO_LONG: 'El nombre del encargado no puede superar 80 caracteres.',
+    PRODUCT_TOO_LONG: 'El nombre del producto no puede superar 120 caracteres.',
+    MIXED_RESPONSIBLE: 'Todos los productos de una operación deben tener el mismo encargado.',
 };
 
 const CONNECTION_MESSAGES = ['failed to fetch', 'networkerror', 'network request failed', 'load failed'];
