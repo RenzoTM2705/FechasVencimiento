@@ -37,7 +37,7 @@ export function LoginPage() {
             <main className="flex flex-1 items-center justify-center px-4 py-10">
                 <div className="w-full max-w-sm">
                     <div className="mb-6 flex items-center gap-3">
-                        <Logo className="h-11 w-11" />
+                        <Logo className="h-10" />
                         <div>
                             <p className="text-[15px] leading-tight font-semibold text-ink">
                                 Control de Vencimientos
