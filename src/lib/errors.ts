@@ -16,6 +16,7 @@ const ERROR_MESSAGES: Record<string, string> = {
     RESPONSIBLE_TOO_LONG: 'El nombre del encargado no puede superar 80 caracteres.',
     PRODUCT_TOO_LONG: 'El nombre del producto no puede superar 120 caracteres.',
     MIXED_RESPONSIBLE: 'Todos los productos de una operación deben tener el mismo encargado.',
+    BATCH_NOT_FOUND: 'El registro ya no existe. Actualiza la página e inténtalo nuevamente.',
 };
 
 const CONNECTION_MESSAGES = ['failed to fetch', 'networkerror', 'network request failed', 'load failed'];

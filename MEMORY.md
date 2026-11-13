@@ -36,9 +36,9 @@
 
 ## Estado actual
 
-- **Fase:** desarrollo — Fases 0 a 6 cerradas; siguiente: Fase 7.
-- **Hecho:** análisis (Fase 0); scaffold y documentación (Fase 1); identidad visual y vistas (Fase 2); altas y autocompletado (Fase 3); base de datos, RLS y acceso (Fase 4); avisos e indicadores (Fase 5); filtros combinables y panel avanzado (Fase 6).
-- **Verificación Supabase (2026-11-13):** `check:supabase` 7/7; E2E 9/9; pantallas verificadas con datos reales y limpieza posterior. Base final: 0 lotes, 0 productos, 1 tienda, 1 usuario administrador.
+- **Fase:** desarrollo — Fases 0 a 7 cerradas; siguiente: Fase 8 (QA, accesibilidad y despliegue).
+- **Hecho:** análisis (Fase 0); scaffold y documentación (Fase 1); identidad visual y vistas (Fase 2); altas y autocompletado (Fase 3); base de datos, RLS y acceso (Fase 4); avisos e indicadores (Fase 5); filtros combinables (Fase 6); edición, eliminación y exportación CSV/XLSX (Fase 7).
+- **Verificación Supabase (2026-11-13):** `check:supabase` 7/7; E2E de alta 9/9; CRUD 10/10; pantallas verificadas con datos reales y limpieza posterior. Base final: 0 lotes, 0 productos, 1 tienda, 1 usuario administrador.
 - **Acceso directo (solo desarrollo):** activo en `.env.local` con `VITE_ACCESO_DIRECTO=true`. El módulo se carga con `import()` dinámico bajo `import.meta.env.DEV`; se comprobó que el build de producción no contiene las credenciales.
-- **Próximo:** Fase 7 — edición, eliminación con confirmación y exportación CSV/XLSX.
-- **Bloqueos:** ninguno para desarrollar; el usuario administrador ya existe (`admin@fechasvencimiento.local`).
+- **Próximo:** Fase 8 — QA responsive/accesibilidad, checklists, build de producción y despliegue en Vercel.
+- **Bloqueos:** ninguno para desarrollar. Para publicar falta autorización de despliegue y las variables de entorno en Vercel.

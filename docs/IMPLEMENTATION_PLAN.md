@@ -13,7 +13,7 @@
 | 4 | `feat/fase-4-supabase` | ✅ Hecha y verificada | Migraciones, RLS, RPC, servicios reales y sesión |
 | 5 | `feat/fase-5-vencimientos` | ✅ Hecha | Avisos, indicadores conectados y validación de umbrales |
 | 6 | `feat/fase-6-filtros` | ✅ Hecha | Búsqueda, filtros combinables, orden y contador |
-| 7 | `feat/fase-7-crud-export` | ⏳ Pendiente | Edición, eliminación, exportación CSV/XLSX |
+| 7 | `feat/fase-7-crud-export` | ✅ Hecha | Edición, eliminación y exportación CSV/XLSX |
 | 8 | `docs/fase-8-qa-deploy` | ⏳ Pendiente | QA responsive/a11y, checklists, README final y Vercel |
 
 ## Fase 1 — Preparación del proyecto
@@ -99,6 +99,8 @@ Entregables:
 - `export-csv.ts` y `export-xlsx.ts`; menú «Todos / Filtrados».
 
 **Criterio de salida:** archivos abren en Excel/LibreOffice con columnas, fechas y estados correctos.
+
+**Resultado (2026-11-13):** completada. Migración `0004_crud.sql` con `update_batch`; acciones por registro en tabla y tarjetas; diálogo de edición reutilizando el formulario; confirmación de borrado con resumen del registro; exportación CSV (BOM, `;`) y Excel con alcance todos/filtrados. 95 pruebas (10 nuevas: CSV, filas de exportación y diálogo de borrado). Verificación CRUD contra Supabase **10/10** y datos de prueba eliminados (0 lotes, 0 productos). El generador de Excel se carga en un chunk aparte solo al exportar.
 
 ## Fase 8 — QA, accesibilidad y despliegue
 

@@ -1,6 +1,6 @@
 import type { BatchView } from '@/types/domain';
 import { toFriendlyMessage } from '@/lib/errors';
-import type { NewBatch } from './batches-service';
+import type { NewBatch, UpdateBatch } from './batches-service';
 import { getBatchesService } from './service';
 
 /**
@@ -58,6 +58,18 @@ export async function addBatches(inputs: NewBatch[]): Promise<number> {
     const count = await getBatchesService().createMany(inputs);
     await refresh();
     return count;
+}
+
+/** Edita un registro existente y recarga la lista. */
+export async function updateBatch(batch: UpdateBatch): Promise<void> {
+    await getBatchesService().update(batch);
+    await refresh();
+}
+
+/** Elimina un registro y recarga la lista. */
+export async function removeBatch(id: string): Promise<void> {
+    await getBatchesService().remove(id);
+    await refresh();
 }
 
 /**

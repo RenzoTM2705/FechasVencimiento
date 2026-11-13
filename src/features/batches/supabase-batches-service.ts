@@ -61,6 +61,22 @@ type RegisterBatchesRpc = (
     args: { p_responsible: string; p_rows: Record<string, unknown>[] },
 ) => PromiseLike<RegisterBatchesResult>;
 
+interface UpdateBatchRpcResult {
+    data: null;
+    error: { message: string } | null;
+}
+
+type UpdateBatchRpc = (
+    fn: 'update_batch',
+    args: {
+        p_id: string;
+        p_responsible: string;
+        p_product_name: string;
+        p_quantity: number;
+        p_expiration_date: string;
+    },
+) => PromiseLike<UpdateBatchRpcResult>;
+
 /**
  * Implementación real contra Supabase.
  *
@@ -104,6 +120,28 @@ export function createSupabaseBatchesService(): BatchesService {
             if (error) throw error;
 
             return typeof data === 'number' ? data : inputs.length;
+        },
+
+        async update(batch) {
+            const rpc = getSupabase().rpc as unknown as UpdateBatchRpc;
+            const { error } = await rpc('update_batch', {
+                p_id: batch.id,
+                p_responsible: batch.responsibleName,
+                p_product_name: batch.productName,
+                p_quantity: batch.quantity,
+                p_expiration_date: batch.expirationDate,
+            });
+
+            if (error) throw error;
+        },
+
+        async remove(id) {
+            const { error } = await getSupabase()
+                .from('product_batches')
+                .delete()
+                .eq('id', id);
+
+            if (error) throw error;
         },
     };
 }

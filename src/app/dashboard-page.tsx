@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Inbox, Plus, Rows3, TriangleAlert } from 'lucide-react';
+import { Download, Inbox, Plus, Rows3, TriangleAlert } from 'lucide-react';
 import { Footer } from '@/components/layout/footer';
 import { Header } from '@/components/layout/header';
 import { Button } from '@/components/ui/button';
@@ -9,8 +9,10 @@ import { BatchCards } from '@/features/batches/batch-cards';
 import { BatchFormDialog } from '@/features/batches/batch-form-dialog';
 import { BatchTable } from '@/features/batches/batch-table';
 import { BulkFormDialog } from '@/features/batches/bulk-form-dialog';
+import { DeleteDialog } from '@/features/batches/delete-dialog';
 import { isDemoMode } from '@/features/batches/service';
 import { useBatches } from '@/features/batches/use-batches';
+import { ExportDialog, type ExportScope } from '@/features/export/export-dialog';
 import { signOut } from '@/features/auth/auth-store';
 import { useSession } from '@/features/auth/use-session';
 import { IndicatorCards } from '@/features/dashboard/indicator-cards';
@@ -22,11 +24,12 @@ import {
     hasActiveFilters,
     responsibleOptions,
 } from '@/lib/filters';
+import { buildExportRows, downloadFile, exportFileName, toCsv, type ExportFormat } from '@/lib/export';
 import { groupByProduct } from '@/lib/grouping';
 import { productOptions, uniqueProductNames } from '@/lib/products';
 import { useViewMode } from '@/lib/use-view-mode';
 import type { ValidatedBatch } from '@/lib/validation';
-import type { BatchFilters } from '@/types/domain';
+import type { BatchFilters, BatchView } from '@/types/domain';
 
 type DialogMode = 'single' | 'bulk' | null;
 
@@ -42,10 +45,14 @@ function initialDialog(): DialogMode {
 
 export function DashboardPage() {
     const { session } = useSession();
-    const { batches, loading, error, createMany, refresh } = useBatches();
+    const { batches, loading, error, createMany, updateBatch, removeBatch, refresh } =
+        useBatches();
     const [filters, setFilters] = useState<BatchFilters>(DEFAULT_FILTERS);
     const [view, setView] = useViewMode();
     const [dialog, setDialog] = useState<DialogMode>(initialDialog);
+    const [editing, setEditing] = useState<BatchView | null>(null);
+    const [deleting, setDeleting] = useState<BatchView | null>(null);
+    const [exporting, setExporting] = useState(false);
     const [status, setStatus] = useState<string | null>(null);
 
     const indicators = useMemo(() => computeIndicators(batches), [batches]);
@@ -74,6 +81,37 @@ export function DashboardPage() {
         setStatus(count === 1 ? 'Producto registrado.' : `${count} productos registrados.`);
     }
 
+    async function handleUpdate(value: ValidatedBatch) {
+        if (!editing) return;
+        await updateBatch({ id: editing.id, ...value });
+        setEditing(null);
+        setStatus('Registro actualizado.');
+    }
+
+    async function handleDelete() {
+        if (!deleting) return;
+        await removeBatch(deleting.id);
+        setDeleting(null);
+        setStatus('Registro eliminado.');
+    }
+
+    async function handleExport(format: ExportFormat, scope: ExportScope) {
+        const source = scope === 'all' ? batches : filtered;
+        const rows = buildExportRows(source);
+        const fileName = exportFileName(format);
+
+        if (format === 'csv') {
+            downloadFile(toCsv(rows), fileName, 'text/csv;charset=utf-8');
+        } else {
+            // El generador de Excel se carga solo al usarlo (chunk aparte).
+            const { downloadXlsx } = await import('@/lib/export-xlsx');
+            await downloadXlsx(rows, fileName);
+        }
+
+        setExporting(false);
+        setStatus(`Exportados ${rows.length} registros en ${format.toUpperCase()}.`);
+    }
+
     async function handleSignOut() {
         try {
             await signOut();
@@ -98,6 +136,10 @@ export function DashboardPage() {
                     </div>
 
                     <div className="flex flex-wrap gap-2">
+                        <Button variant="secondary" onClick={() => setExporting(true)}>
+                            <Download size={16} aria-hidden="true" />
+                            Exportar
+                        </Button>
                         <Button variant="secondary" onClick={() => setDialog('bulk')}>
                             <Rows3 size={16} aria-hidden="true" />
                             Registrar varios
@@ -219,9 +261,13 @@ export function DashboardPage() {
                             }
                         />
                     ) : view === 'table' ? (
-                        <BatchTable batches={filtered} />
+                        <BatchTable batches={filtered} onEdit={setEditing} onDelete={setDeleting} />
                     ) : (
-                        <BatchCards groups={groups} />
+                        <BatchCards
+                            groups={groups}
+                            onEdit={setEditing}
+                            onDelete={setDeleting}
+                        />
                     )}
                 </div>
             </main>
@@ -241,6 +287,37 @@ export function DashboardPage() {
                     catalog={catalog}
                     onClose={() => setDialog(null)}
                     onSubmit={handleCreateBulk}
+                />
+            ) : null}
+
+            {editing ? (
+                <BatchFormDialog
+                    catalog={catalog}
+                    initial={{
+                        responsibleName: editing.responsibleName,
+                        productName: editing.productName,
+                        quantity: editing.quantity,
+                        expirationDate: editing.expirationDate,
+                    }}
+                    onClose={() => setEditing(null)}
+                    onSubmit={handleUpdate}
+                />
+            ) : null}
+
+            {deleting ? (
+                <DeleteDialog
+                    batch={deleting}
+                    onClose={() => setDeleting(null)}
+                    onConfirm={handleDelete}
+                />
+            ) : null}
+
+            {exporting ? (
+                <ExportDialog
+                    allCount={batches.length}
+                    filteredCount={filtered.length}
+                    onClose={() => setExporting(false)}
+                    onExport={handleExport}
                 />
             ) : null}
         </div>

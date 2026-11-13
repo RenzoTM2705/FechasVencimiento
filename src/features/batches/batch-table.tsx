@@ -1,5 +1,6 @@
 import { StatusBadge } from '@/components/ui/status-badge';
 import { RemovalNotice } from './removal-notice';
+import { RecordActions } from './record-actions';
 import { cn } from '@/lib/cn';
 import { describeDays } from '@/lib/expiry';
 import { formatDate, formatNumber } from '@/lib/format';
@@ -15,7 +16,13 @@ const RAIL: Record<ExpiryStatus, string> = {
 
 const HEADERS = ['Encargado', 'Producto', 'Cantidad', 'Vencimiento', 'Días restantes'];
 
-export function BatchTable({ batches }: { batches: BatchView[] }) {
+export interface BatchTableProps {
+    batches: BatchView[];
+    onEdit: (batch: BatchView) => void;
+    onDelete: (batch: BatchView) => void;
+}
+
+export function BatchTable({ batches, onEdit, onDelete }: BatchTableProps) {
     return (
         <div className="overflow-hidden rounded-card border border-line bg-surface shadow-card">
             <p className="border-b border-line px-4 py-2 text-center text-[12px] text-ink-muted sm:hidden">
@@ -48,6 +55,9 @@ export function BatchTable({ batches }: { batches: BatchView[] }) {
                                     {header}
                                 </th>
                             ))}
+                            <th scope="col" className="px-3 py-2.5">
+                                <span className="sr-only">Acciones</span>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -98,6 +108,13 @@ export function BatchTable({ batches }: { batches: BatchView[] }) {
                                             className="mt-0.5"
                                         />
                                     </div>
+                                </td>
+                                <td className="py-3 pr-3 pl-2">
+                                    <RecordActions
+                                        batch={batch}
+                                        onEdit={onEdit}
+                                        onDelete={onDelete}
+                                    />
                                 </td>
                             </tr>
                         ))}
