@@ -7,7 +7,7 @@
 | Fase | Rama | Estado | Entregable |
 |---|---|---|---|
 | 0 | `docs/fase-0-analisis` | ✅ Hecha | Análisis documental y propuesta técnica (`docs/00-fase-0-analisis.md`) |
-| 1 | `feat/fase-1-scaffold` | 🚧 En curso | Scaffold Vite + TS + Tailwind, tipos, cliente Supabase, docs base, CI |
+| 1 | `feat/fase-1-scaffold` | ✅ Hecha | Scaffold Vite + TS + Tailwind, tipos, cliente Supabase, docs base, CI |
 | 2 | `feat/fase-2-interfaz` | ⏳ Pendiente | Identidad visual, header/footer, indicadores, filtros, tabla y tarjetas con datos simulados |
 | 3 | `feat/fase-3-registro` | ⏳ Pendiente | Alta individual y grupal, validaciones, autocompletado |
 | 4 | `feat/fase-4-supabase` | ⏳ Pendiente | Migraciones, RLS, RPC, CRUD real y sesión |
@@ -31,6 +31,8 @@ Entregables:
 - Repositorio Git inicializado con rama `main` y rama de fase.
 
 **Criterio de salida:** `pnpm lint`, `pnpm typecheck`, `pnpm test:run` y `pnpm build` en verde.
+
+**Resultado (2026-11-13):** completada. Lint, typecheck y build sin errores; 13 pruebas en verde (`src/lib/errors.test.ts`). Dos ajustes de entorno quedaron documentados en `CONTEXT.md`: `node-linker=hoisted` (enlaces simbólicos no resolubles en algunos Windows) y `pool: 'threads'` en Vitest (el pool de procesos falla con EPERM en entornos restringidos).
 
 ## Fase 2 — Identidad visual e interfaz
 
