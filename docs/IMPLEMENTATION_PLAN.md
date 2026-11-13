@@ -12,7 +12,7 @@
 | 3 | `feat/fase-3-registro` | ✅ Hecha | Alta individual y grupal, validaciones y autocompletado |
 | 4 | `feat/fase-4-supabase` | ✅ Hecha y verificada | Migraciones, RLS, RPC, servicios reales y sesión |
 | 5 | `feat/fase-5-vencimientos` | ✅ Hecha | Avisos, indicadores conectados y validación de umbrales |
-| 6 | `feat/fase-6-filtros` | ⏳ Pendiente | Búsqueda, filtros combinables, orden y contador |
+| 6 | `feat/fase-6-filtros` | ✅ Hecha | Búsqueda, filtros combinables, orden y contador |
 | 7 | `feat/fase-7-crud-export` | ⏳ Pendiente | Edición, eliminación, exportación CSV/XLSX |
 | 8 | `docs/fase-8-qa-deploy` | ⏳ Pendiente | QA responsive/a11y, checklists, README final y Vercel |
 
@@ -89,6 +89,8 @@ Entregables:
 - Filtros aplicados antes de agrupar tarjetas; estado conservado al cambiar de vista.
 
 **Criterio de salida:** matriz de filtros cumplida; sin registros fuera de rango en tarjetas.
+
+**Resultado (2026-11-13):** completada. Barra con búsqueda, encargado, chips de estado múltiple, orden y panel avanzado (producto, fecha exacta, rango, próximos 7/10/15/21/30 días), contador de filtros activos, «Limpiar filtros» y contador de resultados. 85 pruebas (10 nuevas: chips, panel, fecha exacta, contadores, opciones de producto). Verificada en escritorio y móvil con 8 registros reales, luego eliminados (0 lotes, 0 productos).
 
 ## Fase 7 — Edición, eliminación y exportación
 

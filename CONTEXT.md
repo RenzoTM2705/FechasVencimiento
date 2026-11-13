@@ -102,6 +102,7 @@ docs/                  # PRD, TRD, UX, FLOW, plan, análisis de Fase 0
 | Firma tipada a mano para `register_batches` | La inferencia de argumentos de postgrest-js exige coincidencia exacta y resolvía `undefined` con tipos escritos a mano; la firma explícita conserva nombre y argumentos verificados | 2026-11-13 |
 | Sin Supabase configurado | Producción muestra pantalla de configuración; desarrollo usa memoria con aviso de modo demostración. Nunca se simula persistencia en producción | 2026-11-13 |
 | Migraciones por Management API | `POST /v1/projects/{ref}/database/query` con `read_only: false` aplica el SQL; `/database/migrations` exige el permiso `database_migrations_write` que el token inicial no tenía | 2026-11-13 |
+| Acceso directo solo en desarrollo | `dev-autologin.ts` se importa dinámicamente dentro de `import.meta.env.DEV` y crea una sesión real; el build de producción se verificó sin credenciales. En producción se mantiene correo y contraseña | 2026-11-13 |
 
 ## Requisitos no funcionales
 
