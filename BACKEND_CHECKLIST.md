@@ -47,3 +47,48 @@
 - [ ] Retención y borrado definidos; los datos inactivos se purgan o anonimizan.
 - [ ] Cifrado en tránsito (TLS) y, cuando corresponda, en reposo.
 - [ ] Escala a revisión humana cualquier tratamiento de datos sensibles, pagos o requisitos regulatorios.
+
+---
+
+## Estado de verificación — 2026-11-13
+
+**No hay API propia:** el backend es Supabase (PostgREST + RPC). Por eso los ítems de contrato de API, versionado, `/health` propio, rate limiting, paginación de endpoints e idempotencia se marcan **N/A** con motivo.
+
+### Diseño de API
+- [x] Contrato documentado en `docs/TRD.md` §5: firma de `register_batches` y `update_batch`, argumentos, retorno y códigos de error.
+- [x] Validación server-side de tipos, rango y campos permitidos (constraints + validaciones en las RPC).
+- [x] Autorización por recurso delegada en RLS (no basta autenticación: se probó que `anon` no accede).
+- [x] Errores consistentes: códigos estables traducidos en el cliente, sin detalles internos.
+- [x] Solo se devuelven los campos necesarios (select explícito).
+- [ ] Paginación: **N/A en v1** (una tienda, < 5 000 filas; revisar si crece).
+- [ ] Versionado de API pública: **N/A** (sin consumidores externos).
+
+### Base de datos y migraciones
+- [x] Migraciones versionadas y no destructivas: `0001_core`, `0002_rls`, `0003_rpc`, `0004_crud` (+ `0005_modo_publico` opcional, no aplicada).
+- [x] Constraints: PK, FK `on delete restrict`, `NOT NULL`, `CHECK quantity > 0`, longitudes, `UNIQUE normalized_name`.
+- [x] Índices para las consultas frecuentes: `(store_id, expiration_date)`, `(product_id)`, `(store_id, responsible_name)`.
+- [x] RLS habilitada y probada con `check:supabase` y peticiones directas.
+- [x] Migraciones aplicadas y verificadas en el proyecto real; `prosecdef = false` en las dos RPC.
+- [ ] Seeds separados de datos reales: **N/A** (solo la tienda inicial; los datos de prueba se crean y eliminan en scripts temporales).
+- [ ] Backups con restauración probada: **pendiente**.
+
+### Fiabilidad y operación
+- [x] Health check: **N/A propio**; Supabase expone `/auth/v1/health` (verificado 200).
+- [x] Logs: Supabase (Auth/Postgres/API) y Vercel; la app no registra datos personales.
+- [x] Timeout en llamadas externas: el cliente usa fetch del navegador con error controlado; no hay reintentos automáticos.
+- [x] Degradación: error explícito con «Reintentar» y mensaje comprensible si falla la red.
+- [ ] Rate limiting: **delegado en Supabase/Vercel** (no configurado explícitamente).
+- [ ] Métricas y alertas: **pendiente** (solo logs).
+- [x] Variables de entorno documentadas en `.env.example` y validadas al arrancar (`src/lib/env.ts`).
+
+### Testing
+- [x] 95 pruebas de dominio y componentes; E2E 9/9 y CRUD 10/10 contra el proyecto real.
+- [ ] Tests de migración (aplicar y revertir): **N/A** (migraciones idempotentes y no destructivas; reversión documentada en TRD).
+- [x] Servicios externos no forman parte de los tests unitarios; los E2E usan un proyecto de prueba y limpian sus datos.
+- [x] Comprobación de rendimiento razonable: consulta única ordenada por índice, sin N+1.
+
+### Datos personales
+- [x] Minimización: solo el nombre del encargado.
+- [ ] Retención y borrado definidos: **pendiente** (sin política formal en v1).
+- [x] Cifrado en tránsito (TLS) por Supabase y Vercel.
+- [x] Sin datos sensibles, pagos ni requisitos regulatorios conocidos.

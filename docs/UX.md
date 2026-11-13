@@ -26,7 +26,7 @@ Referencia de la skill `ui-ux-pro-max`: producto «Inventory & Stock Management�
 | `--color-surface-sunken` | `#EEF1F5` | Cabecera de tabla, campos, zonas inactivas |
 | `--color-ink` | `#0B1220` | Texto principal, cabecera |
 | `--color-ink-soft` | `#334155` | Texto secundario |
-| `--color-ink-muted` | `#64748B` | Metadatos, ayudas (mínimo 4.5:1 sobre blanco) |
+| `--color-ink-muted` | `#5F6E85` | Metadatos, ayudas (4.78:1 sobre el lienzo) |
 | `--color-line` | `#E3E8EF` | Hairlines, bordes de tarjeta |
 | `--color-line-strong` | `#CBD5E1` | Bordes de campos y separadores fuertes |
 | `--color-brand` | `#0F172A` | Cabecera, botón primario |

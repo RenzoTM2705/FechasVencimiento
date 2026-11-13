@@ -58,6 +58,23 @@ VITE_ACCESO_DIRECTO_PASSWORD="tu-contraseña"
 producción no lo incluye y las credenciales no llegan al bundle (verificado).
 En producción el acceso sigue siendo con correo y contraseña.
 
+### Modo público (sin login)
+
+Existe un modo **sin pantalla de acceso**, desactivado por defecto. Para
+activarlo hay que hacer **las dos cosas**:
+
+1. Aplicar `supabase/migrations/0005_modo_publico.sql` (crea políticas RLS para `anon`).
+2. Definir `VITE_MODO_ACCESO=publico` en el entorno de build.
+
+> ⚠️ **Qué implica:** sin sesión no hay identidad que autorizar. Cualquier
+> persona con la URL y la clave pública podrá **leer, crear, editar y borrar**
+> registros. No es un modo «protegido»: es la base de datos abierta a quien
+> tenga el enlace. Actívalo solo si asumes ese riesgo.
+
+Para volver al login, ejecuta los `drop policy` / `revoke` que están al final de
+`0005_modo_publico.sql` y quita `VITE_MODO_ACCESO` (o ponlo en `login`). El
+componente de acceso sigue en el código: no se elimina nada.
+
 ### Logotipo
 
 `public/logo.svg` es el favicon y `src/components/layout/logo.tsx` dibuja la marca del header. Ambos son un marcador: reemplázalos por el logotipo definitivo cuando esté disponible.
@@ -74,6 +91,7 @@ En producción el acceso sigue siendo con correo y contraseña.
 | `pnpm test` | Vitest en modo watch |
 | `pnpm test:run` | Vitest una vez (usado por CI) |
 | `pnpm run check:supabase` | Verifica conexión, RLS y RPC contra el proyecto configurado |
+| `pnpm run check:contrast` | Audita el contraste WCAG de los tokens de color |
 
 ## Base de datos
 
@@ -125,6 +143,18 @@ Regla de arquitectura: **la UI nunca calcula días restantes ni estados**. Todo 
 | [docs/FLOW.md](docs/FLOW.md) | Flujos de usuario |
 | [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md) | Fases, riesgos y estado del proyecto |
 | [docs/00-fase-0-analisis.md](docs/00-fase-0-analisis.md) | Análisis documental y decisiones de arranque |
+
+## Despliegue en Vercel
+
+1. Importa `RenzoTM2705/FechasVencimiento` en Vercel.
+2. Framework **Vite**; build `pnpm run build`; salida `dist` (ya declarado en `vercel.json`).
+3. En *Settings → Environment Variables* define, para Production, Preview y Development:
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY`
+4. Opcional: `VITE_MODO_ACCESO=publico` solo si se aplicó `0005_modo_publico.sql` (ver «Modo público»).
+5. Deploy. Tras publicar, ejecuta `pnpm run check:supabase` en local para confirmar que el proyecto responde.
+
+No se despliega nada sin autorización explícita del propietario.
 
 ## Seguridad
 
