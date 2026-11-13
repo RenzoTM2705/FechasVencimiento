@@ -10,7 +10,7 @@
 | 1 | `feat/fase-1-scaffold` | ✅ Hecha | Scaffold Vite + TS + Tailwind, tipos, cliente Supabase, docs base, CI |
 | 2 | `feat/fase-2-interfaz` | ✅ Hecha | Identidad visual, header/footer, indicadores, filtros, tabla y tarjetas con datos simulados |
 | 3 | `feat/fase-3-registro` | ✅ Hecha | Alta individual y grupal, validaciones y autocompletado |
-| 4 | `feat/fase-4-supabase` | ⏳ Pendiente | Migraciones, RLS, RPC, CRUD real y sesión |
+| 4 | `feat/fase-4-supabase` | 🟡 Implementada, sin verificar | Migraciones, RLS, RPC, servicios reales y sesión |
 | 5 | `feat/fase-5-vencimientos` | ⏳ Pendiente | Avisos, indicadores conectados y validación exhaustiva de umbrales |
 | 6 | `feat/fase-6-filtros` | ⏳ Pendiente | Búsqueda, filtros combinables, orden y contador |
 | 7 | `feat/fase-7-crud-export` | ⏳ Pendiente | Edición, eliminación, exportación CSV/XLSX |
@@ -69,6 +69,8 @@ Entregables:
 - `docs/TRD.md` con esquema, políticas y flujo de migraciones.
 
 **Criterio de salida:** datos persistentes tras recargar y desde otro dispositivo; sin acceso anónimo.
+
+**Resultado (2026-11-13):** implementada, **pendiente de verificación contra un proyecto Supabase real**. Se añadieron las tres migraciones (`0001_core`, `0002_rls`, `0003_rpc`), `docs/TRD.md` con el contrato completo, el servicio Supabase detrás de la misma interfaz que el de memoria, y la puerta de sesión: configuración faltante → acceso → panel. Sin variables de entorno, el build de producción muestra una pantalla de configuración en lugar de arrancar con datos falsos; en desarrollo se mantiene el modo demostración con aviso visible. Checklist de verificación en `docs/TRD.md` §8. La fase se cerrará cuando existan `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY`.
 
 ## Fase 5 — Lógica de vencimientos
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { validateBatch, validateBulk, type BulkDraftRow } from './validation';
+import { validateBatch, validateBulk, validateLogin, type BulkDraftRow } from './validation';
 
 const VALID = {
     responsibleName: '  Carlos  ',
@@ -82,6 +82,25 @@ describe('validateBatch', () => {
         expect(validateBatch({ ...VALID, productName: 'x'.repeat(121) }).errors.productName).toBe(
             'El producto no puede superar 120 caracteres.',
         );
+    });
+});
+
+describe('validateLogin', () => {
+    it('exige correo y contraseña', () => {
+        expect(validateLogin({ email: '', password: '' })).toEqual({
+            email: 'Ingresa tu correo.',
+            password: 'Ingresa tu contraseña.',
+        });
+    });
+
+    it('rechaza correos con formato inválido', () => {
+        expect(validateLogin({ email: 'carlos', password: 'secreta' })).toEqual({
+            email: 'Ingresa un correo válido.',
+        });
+    });
+
+    it('acepta un correo válido', () => {
+        expect(validateLogin({ email: ' admin@tienda.pe ', password: 'secreta' })).toEqual({});
     });
 });
 

@@ -98,6 +98,9 @@ docs/                  # PRD, TRD, UX, FLOW, plan, análisis de Fase 0
 | `<dialog>` nativo para formularios | Foco atrapado, fondo inerte, Escape y anuncio accesible sin dependencias de UI | 2026-11-13 |
 | Store suscribible con `useSyncExternalStore` | La carga de datos no usa `setState` dentro de un efecto (regla `react-hooks/set-state-in-effect`); el estado se comparte entre componentes | 2026-11-13 |
 | `batches-service` con interfaz propia | La Fase 4 sustituye la implementación en memoria por Supabase sin tocar componentes ni el hook | 2026-11-13 |
+| Logotipo en línea (`components/layout/logo.tsx`) | El `<img>` con SVG no se pintaba en el navegador headless usado para verificar; en línea es nítido, sin petición y reemplazable en un solo archivo | 2026-11-13 |
+| Firma tipada a mano para `register_batches` | La inferencia de argumentos de postgrest-js exige coincidencia exacta y resolvía `undefined` con tipos escritos a mano; la firma explícita conserva nombre y argumentos verificados | 2026-11-13 |
+| Sin Supabase configurado | Producción muestra pantalla de configuración; desarrollo usa memoria con aviso de modo demostración. Nunca se simula persistencia en producción | 2026-11-13 |
 
 ## Requisitos no funcionales
 
