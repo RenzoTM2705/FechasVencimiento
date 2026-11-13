@@ -77,7 +77,12 @@ componente de acceso sigue en el código: no se elimina nada.
 
 ### Logotipo
 
-`public/logo.svg` es el favicon y `src/components/layout/logo.tsx` dibuja la marca del header. Ambos son un marcador: reemplázalos por el logotipo definitivo cuando esté disponible.
+- `public/logo.ico`: favicon.
+- `public/logo.png`: logotipo original de la tienda (Mass), usado como `apple-touch-icon` y fuente del wordmark.
+- `public/logo-mark.png`: versión recortada y con fondo transparente para la cabecera, el acceso y la pantalla de carga.
+- `src/components/layout/logo.tsx`: componente que usa el wordmark; si cambia el logotipo, reemplaza los archivos PNG/ICO.
+
+La paleta sale del propio logotipo: amarillo `#FFBC00` para la cabecera y azul `#173E89` para la marca y la interacción. Detalle en `docs/UX.md`.
 
 ### Comandos
 
