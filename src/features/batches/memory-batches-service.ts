@@ -104,5 +104,24 @@ export function createMemoryBatchesService(): BatchesService {
             stored = [...stored, ...created];
             return created.length;
         },
+
+        async update(batch) {
+            stored = stored.map((item) =>
+                item.id === batch.id
+                    ? {
+                          ...item,
+                          productId: productIdFor(batch.productName),
+                          productName: batch.productName,
+                          responsibleName: batch.responsibleName,
+                          quantity: batch.quantity,
+                          expirationDate: batch.expirationDate,
+                      }
+                    : item,
+            );
+        },
+
+        async remove(id) {
+            stored = stored.filter((item) => item.id !== id);
+        },
     };
 }

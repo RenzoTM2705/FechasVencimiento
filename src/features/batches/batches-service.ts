@@ -18,4 +18,11 @@ export interface NewBatch {
 export interface BatchesService {
     list(): Promise<BatchView[]>;
     createMany(inputs: NewBatch[]): Promise<number>;
+    update(batch: UpdateBatch): Promise<void>;
+    remove(id: string): Promise<void>;
+}
+
+/** Registro existente que se va a editar. */
+export interface UpdateBatch extends NewBatch {
+    id: string;
 }

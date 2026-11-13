@@ -7,6 +7,7 @@ import { describeDays } from '@/lib/expiry';
 import { formatDate, formatNumber, formatUnits } from '@/lib/format';
 import type { ProductGroup } from '@/lib/grouping';
 import type { BatchView, ExpiryStatus } from '@/types/domain';
+import { RecordActions } from './record-actions';
 import { RemovalNotice } from './removal-notice';
 
 const RAIL: Record<ExpiryStatus, string> = {
@@ -19,7 +20,15 @@ const RAIL: Record<ExpiryStatus, string> = {
 
 const INITIAL_VISIBLE = 3;
 
-function BatchRow({ batch }: { batch: BatchView }) {
+function BatchRow({
+    batch,
+    onEdit,
+    onDelete,
+}: {
+    batch: BatchView;
+    onEdit: (batch: BatchView) => void;
+    onDelete: (batch: BatchView) => void;
+}) {
     return (
         <li className="flex items-start gap-3 py-2.5">
             <span
@@ -27,11 +36,19 @@ function BatchRow({ batch }: { batch: BatchView }) {
                 className={cn('mt-1 h-8 w-[3px] shrink-0 rounded-full', RAIL[batch.status])}
             />
             <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
                     <p className="text-sm font-semibold text-ink tabular">
                         {formatDate(batch.expirationDate)}
                     </p>
-                    <StatusBadge status={batch.status} />
+                    <div className="flex items-center gap-1">
+                        <StatusBadge status={batch.status} />
+                        <RecordActions
+                            batch={batch}
+                            onEdit={onEdit}
+                            onDelete={onDelete}
+                            className="-my-1"
+                        />
+                    </div>
                 </div>
                 <p className="mt-0.5 text-[13px] text-ink-soft">
                     {formatUnits(batch.quantity)} · {batch.responsibleName} ·{' '}
@@ -56,7 +73,15 @@ function BatchRow({ batch }: { batch: BatchView }) {
     );
 }
 
-function ProductCard({ group }: { group: ProductGroup }) {
+function ProductCard({
+    group,
+    onEdit,
+    onDelete,
+}: {
+    group: ProductGroup;
+    onEdit: (batch: BatchView) => void;
+    onDelete: (batch: BatchView) => void;
+}) {
     const [expanded, setExpanded] = useState(false);
     const visible = expanded ? group.batches : group.batches.slice(0, INITIAL_VISIBLE);
     const hiddenCount = group.batches.length - INITIAL_VISIBLE;
@@ -75,7 +100,12 @@ function ProductCard({ group }: { group: ProductGroup }) {
 
             <ul className="flex-1 divide-y divide-line px-4">
                 {visible.map((batch) => (
-                    <BatchRow key={batch.id} batch={batch} />
+                    <BatchRow
+                        key={batch.id}
+                        batch={batch}
+                        onEdit={onEdit}
+                        onDelete={onDelete}
+                    />
                 ))}
             </ul>
 
@@ -112,11 +142,24 @@ function ProductCard({ group }: { group: ProductGroup }) {
     );
 }
 
-export function BatchCards({ groups }: { groups: ProductGroup[] }) {
+export function BatchCards({
+    groups,
+    onEdit,
+    onDelete,
+}: {
+    groups: ProductGroup[];
+    onEdit: (batch: BatchView) => void;
+    onDelete: (batch: BatchView) => void;
+}) {
     return (
         <div className="grid items-start gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {groups.map((group) => (
-                <ProductCard key={group.productId} group={group} />
+                <ProductCard
+                    key={group.productId}
+                    group={group}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                />
             ))}
         </div>
     );

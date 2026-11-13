@@ -11,6 +11,8 @@ export interface BatchFormDialogProps {
     catalog: string[];
     onClose: () => void;
     onSubmit: (value: ValidatedBatch) => Promise<void>;
+    /** Si se indica, el diálogo edita ese registro en lugar de crear uno. */
+    initial?: ValidatedBatch;
 }
 
 const EMPTY = {
@@ -20,9 +22,19 @@ const EMPTY = {
     expirationDate: '',
 };
 
-export function BatchFormDialog({ catalog, onClose, onSubmit }: BatchFormDialogProps) {
+export function BatchFormDialog({ catalog, onClose, onSubmit, initial }: BatchFormDialogProps) {
     const formId = useId();
-    const [draft, setDraft] = useState(EMPTY);
+    const editing = initial !== undefined;
+    const [draft, setDraft] = useState(() =>
+        initial
+            ? {
+                  responsibleName: initial.responsibleName,
+                  productName: initial.productName,
+                  quantity: String(initial.quantity),
+                  expirationDate: initial.expirationDate,
+              }
+            : EMPTY,
+    );
     const [errors, setErrors] = useState<FieldErrors>({});
     const [submitting, setSubmitting] = useState(false);
     const [formError, setFormError] = useState<string | null>(null);
@@ -46,8 +58,12 @@ export function BatchFormDialog({ catalog, onClose, onSubmit }: BatchFormDialogP
 
     return (
         <Dialog
-            title="Registrar producto"
-            description="Un producto con su fecha de vencimiento. Puedes registrar el mismo producto varias veces."
+            title={editing ? 'Editar registro' : 'Registrar producto'}
+            description={
+                editing
+                    ? 'Cambia los datos de este registro. Los demás registros del producto no se modifican.'
+                    : 'Un producto con su fecha de vencimiento. Puedes registrar el mismo producto varias veces.'
+            }
             onClose={onClose}
         >
             <form onSubmit={handleSubmit} noValidate>
@@ -138,7 +154,11 @@ export function BatchFormDialog({ catalog, onClose, onSubmit }: BatchFormDialogP
                         disabled={submitting}
                         className="w-full whitespace-nowrap sm:w-auto"
                     >
-                        {submitting ? 'Guardando…' : 'Guardar producto'}
+                        {submitting
+                            ? 'Guardando…'
+                            : editing
+                              ? 'Guardar cambios'
+                              : 'Guardar producto'}
                     </Button>
                 </div>
             </form>
